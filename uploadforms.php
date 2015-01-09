@@ -86,9 +86,9 @@ foreach( $fileArray as $file)
 
     json_encode($uploadedResult);
 
-    header('Content-type: application/json');
+//    header('Content-type: application/json');
 
-    echo $uploadedResult;
+    print_r( $uploadedResult);
 }
 
 
