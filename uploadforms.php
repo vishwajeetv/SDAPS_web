@@ -1,64 +1,94 @@
 <?php
 
 
-$target_dir = "../uploads/";
+$targetDir = "../uploads/";
 
 
-$file_array = array();
+$fileArray = array();
 
 
-$file_count = count($_FILES['fileToUpload']['name']);
-$file_keys = array_keys($_FILES['fileToUpload']);
+$fileCount = count($_FILES['fileToUpload']['name']);
+$fileKeys = array_keys($_FILES['fileToUpload']);
 
-for ($i=0; $i<$file_count; $i++) {
-    foreach ($file_keys as $key) {
-        $file_array[$i][$key] = $_FILES['fileToUpload'][$key][$i];
+for ($i=0; $i<$fileCount; $i++) {
+    foreach ($fileKeys as $key) {
+        $fileArray[$i][$key] = $_FILES['fileToUpload'][$key][$i];
     }
 }
-echo "<pre>";
-var_dump($file_array);
-echo "</pre>";
 
-foreach( $file_array as $file)
+foreach( $fileArray as $file)
 {
 
-    $target_file = $target_dir . basename($file['name']);
+    $targetFile = $targetDir . basename($file['name']);
 
-    print_r($target_file);
     $uploadOk = 1;
-    $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
+    $fileType = pathinfo($targetFile, PATHINFO_EXTENSION);
+
+    $uploadMessages = array();
 
     if (isset($_POST["submit"])) {
-        $uploadOk = 1;
 
-    }
+        if (file_exists($targetFile)) {
+            array_push($uploadMessages, array(
+               "errorExist" =>  "This file already exists."
+            ));
 
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
+        }
+        if ($file["size"] > 500000000) {
 
-    if ($_FILES["fileToUpload"]["size"] > 50000000) {
-        echo "Sorry, your file is too large.";
-        $uploadOk = 0;
-    }
+            array_push($uploadMessages, array(
+                "errorFileLarge" =>  "Sorry, this file is too large"
+            ));
+         }
 
-    if ($fileType != "pdf") {
-        echo "Sorry, only pdf files are allowed";
-        $uploadOk = 0;
-    }
+//        if ($fileType != "pdf") {
+//            array_push($uploadMessages, array(
+//                "errorFileType" =>  "Sorry, only pdf files are allowed."
+//            ));
+//        }
 
-    if ($uploadOk == 0) {
-        echo "Sorry, your file was not uploaded.";
+    $uploadedResult = array();
+
+    if (count($uploadMessages) > 0) {
+        array_push($uploadedResult,
+            array(
+                basename($file["name"]) => "failure",
+                "message" => $uploadMessages
+            ));
 
     } else {
-        if (move_uploaded_file($file["tmp_name"], $target_file)) {
-            echo "The file " . basename($file["name"]) . " has been uploaded.";
+        if (move_uploaded_file($file["tmp_name"], $targetFile)) {
+
+            array_push($uploadMessages, array(
+                "successUpload" =>  "The file has been successfully uploaded"
+            ));
+            array_push($uploadedResult,
+            array(
+                basename($file["name"]) => "success",
+                "message" => $uploadMessages
+            ));
+
         } else {
-            echo "Sorry, there was an error uploading your file.";
+
+            array_push($uploadMessages, array(
+                "successUpload" =>  "Failed to upload the file"
+            ));
+
+            array_push($uploadedResult,
+                array(
+                    basename($file["name"]) => "failure",
+                    "message" => $uploadMessages
+                ));
         }
     }
+}
 
+
+    json_encode($uploadedResult);
+
+    header('Content-type: application/json');
+
+    echo $uploadedResult;
 }
 
 
