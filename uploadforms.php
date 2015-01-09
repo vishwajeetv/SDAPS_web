@@ -43,10 +43,10 @@ foreach( $file_array as $file)
         $uploadOk = 0;
     }
 
-//    if ($fileType != "pdf") {
-//        echo "Sorry, only pdf files are allowed";
-//        $uploadOk = 0;
-//    }
+    if ($fileType != "pdf") {
+        echo "Sorry, only pdf files are allowed";
+        $uploadOk = 0;
+    }
 
     if ($uploadOk == 0) {
         echo "Sorry, your file was not uploaded.";
