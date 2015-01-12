@@ -1,3 +1,5 @@
+
+
 <html>
 <head>
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -28,7 +30,8 @@
                 <div id="uploadFiles" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
 
-                        <form action="index.php/form/upload-form" method="post" enctype="multipart/form-data">
+                        {{--@plupload()--}}
+                        <form action="index.php/form/upload-form" id="fileUploadForm" method="post" enctype="multipart/form-data">
                             Select file to upload:
                             <!--            <input type="file" name="fileToUpload" id="fileToUpload">-->
                             <input type="file" id="chooseFilesButton" multiple="multiple" name="fileToUpload[]" />
@@ -52,7 +55,9 @@
                 </div>
                 <div id="addFiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addFilesHeading">
                     <div class="panel-body">
-                        adkajkda
+                        <div id="fileNamesContainer">
+
+                        </div>
 
                     </div>
                 </div>
@@ -85,8 +90,9 @@
     </div>
 </div>
 
-
+</div>
 <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ URL::asset('jquery.form.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/material.min.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/ripples.min.js') }}"></script>
@@ -96,46 +102,88 @@
     });
 
 
-    $("#uploadButton").click(
+    $("#fileUploadForm").ajaxForm({url: "index.php/form/upload-form", type: 'post',
+        success: function(response)
+        {
+            response.body.forEach(function(result) {
 
+                $("#fileNamesContainer").append("<div>"+result.fileName+"</div>");
+            });
 
-
-            function(e) {
-
-                e.preventDefault();
-
-                var filesToUpload = new Array();
-
-                for (index = 0; index < $('#chooseFilesButton').prop('files').length; ++index) {
-                    filesToUpload.push(
-                                $('#chooseFilesButton').prop('files')[index]
-                    )
-                }
-
-                console.log(filesToUpload);
-
-                $.ajax({
-
-                    type: "POST",
-                    url: "{{ URL::to('index.php/form/upload-form'); }}",
-                    data:  filesToUpload,
-
-                    contentType: "multipart/form-data"
-
-                })
-                .done(function (response) {
-                            console.log(response);
-                    if (response.header.status == 'success') {
-
-                    }
-                    else {
-                        $("#errorMessage").show(400);
-                    }
-                }).
-                error(function (response) {
-                });
-
+        }
     });
+
+    $("#fileUploadForm").ajaxForm({url: "index.php/form/upload-form", type: 'post',
+        success: function(response)
+        {
+            response.body.forEach(function(result) {
+
+                $("#fileNamesContainer").append("<div>"+result.fileName+"</div>");
+            });
+
+        }
+    });
+
+    $("#addFilesForm").ajaxForm({url: "index.php/form/add-forms", type: 'post',
+        success: function(response)
+        {
+            response.body.forEach(function(result) {
+
+                $("#fileNamesContainer").append("<div>"+result.fileName+"</div>");
+            });
+
+        }
+    });
+    {{--$("#uploadButton").click(--}}
+
+
+
+            {{--function(e) {--}}
+
+                {{--e.preventDefault();--}}
+
+                {{--var filesToUpload = new Array();--}}
+
+                {{--for (index = 0; index < $('#chooseFilesButton').prop('files').length; ++index) {--}}
+                    {{--filesToUpload.push(--}}
+
+                               {{--$('#chooseFilesButton').prop('files')[index]--}}
+
+
+                    {{--)--}}
+                {{--}--}}
+
+                {{--console.log(filesToUpload);--}}
+
+                {{--$.ajax({--}}
+
+                    {{--type: "POST",--}}
+                    {{--url: "{{ URL::to('index.php/form/upload-form'); }}",--}}
+                    {{--processData: false,--}}
+{{--//                    contentType: false,--}}
+                    {{--contentType: "multipart/form-data",--}}
+                    {{--data:--}}
+                    {{--{--}}
+                        {{--"fileToUpload" : filesToUpload--}}
+                    {{--}--}}
+
+
+
+
+                {{--})--}}
+                {{--.done(function (response) {--}}
+                            {{--console.log(response);--}}
+{{--//                    if (response.header.status == 'success') {--}}
+{{--//--}}
+{{--//                    }--}}
+{{--//                    else {--}}
+{{--//                        $("#errorMessage").show(400);--}}
+{{--//                    }--}}
+                {{--}).--}}
+                {{--error(function (response) {--}}
+                {{--});--}}
+
+    {{--});--}}
 
 
 </script>
