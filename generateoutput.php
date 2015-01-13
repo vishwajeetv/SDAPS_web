@@ -11,10 +11,6 @@ $command = '/home/ubuntu/Projects/export_csv.sh';
 
 $output = shell_exec( $command );
 
-
-header('Content-type: application/json');
-
-
 // Set your CSV feed
 $feed = '/home/ubuntu/Projects/citizen_feedback/data_5.csv';
 

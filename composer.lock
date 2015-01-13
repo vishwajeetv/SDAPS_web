@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cce6015a015d1aaf6f2cae97680d79b9",
+    "hash": "5e841a78e02b50ee58d614b76bdd1841",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -144,6 +144,48 @@
                 "zf2"
             ],
             "time": "2014-10-26 09:05:09"
+        },
+        {
+            "name": "fojuth/plupload",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fojuth/plupload.git",
+                "reference": "8fbf53a691c5139f0f91baac00e47776180d582e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fojuth/plupload/zipball/8fbf53a691c5139f0f91baac00e47776180d582e",
+                "reference": "8fbf53a691c5139f0f91baac00e47776180d582e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0"
+            },
+            "suggest": {
+                "rcrowe/twigbridge": "Required for Twig support."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Fojuth\\Plupload": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Kamil Fojuth",
+                    "email": "fojuth@gmail.com"
+                }
+            ],
+            "description": "A Laravel 4 implementation of Plupload (http://www.plupload.com/).",
+            "keywords": [
+                "file upload",
+                "laravel",
+                "plupload"
+            ],
+            "time": "2014-09-20 19:33:06"
         },
         {
             "name": "ircmaxell/password-compat",

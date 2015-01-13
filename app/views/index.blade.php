@@ -59,6 +59,11 @@
 
                         </div>
 
+                        <form action="index.php/form/add-forms" id="addFilesForm" method="post">
+
+                            <input type="submit" id="addFilesButton" value="Add Files" name="submit">
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -74,8 +79,11 @@
             </div>
             <div id="processFiles" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="processFilesHeading">
                 <div class="panel-body">
+                    <form action="index.php/form/process-forms" id="processFilesForm" method="post">
 
-                    asdd
+                        <input type="submit" id="processFilesButton" value="Process Files" name="submit">
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -107,84 +115,32 @@
         {
             response.body.forEach(function(result) {
 
-                $("#fileNamesContainer").append("<div>"+result.fileName+"</div>");
+                $("#fileNamesContainer").append("<div class='fileName'>"+result.fileName+"</div>");
+                $("#addFilesForm").append("<input type='hidden' class='fileName' name='fileNames[]' value='"+result.fileName+"'/>");
             });
 
         }
     });
 
-    $("#fileUploadForm").ajaxForm({url: "index.php/form/upload-form", type: 'post',
+
+        $("#addFilesForm").ajaxForm({url: "index.php/form/add-forms", type: 'post',
+
+            success: function(response)
+            {
+                console.log(response);
+
+            }
+        });
+
+
+    $("#processFilesForm").ajaxForm({url: "index.php/form/process-forms", type: 'post',
+
         success: function(response)
         {
-            response.body.forEach(function(result) {
-
-                $("#fileNamesContainer").append("<div>"+result.fileName+"</div>");
-            });
+            console.log(response);
 
         }
     });
-
-    $("#addFilesForm").ajaxForm({url: "index.php/form/add-forms", type: 'post',
-        success: function(response)
-        {
-            response.body.forEach(function(result) {
-
-                $("#fileNamesContainer").append("<div>"+result.fileName+"</div>");
-            });
-
-        }
-    });
-    {{--$("#uploadButton").click(--}}
-
-
-
-            {{--function(e) {--}}
-
-                {{--e.preventDefault();--}}
-
-                {{--var filesToUpload = new Array();--}}
-
-                {{--for (index = 0; index < $('#chooseFilesButton').prop('files').length; ++index) {--}}
-                    {{--filesToUpload.push(--}}
-
-                               {{--$('#chooseFilesButton').prop('files')[index]--}}
-
-
-                    {{--)--}}
-                {{--}--}}
-
-                {{--console.log(filesToUpload);--}}
-
-                {{--$.ajax({--}}
-
-                    {{--type: "POST",--}}
-                    {{--url: "{{ URL::to('index.php/form/upload-form'); }}",--}}
-                    {{--processData: false,--}}
-{{--//                    contentType: false,--}}
-                    {{--contentType: "multipart/form-data",--}}
-                    {{--data:--}}
-                    {{--{--}}
-                        {{--"fileToUpload" : filesToUpload--}}
-                    {{--}--}}
-
-
-
-
-                {{--})--}}
-                {{--.done(function (response) {--}}
-                            {{--console.log(response);--}}
-{{--//                    if (response.header.status == 'success') {--}}
-{{--//--}}
-{{--//                    }--}}
-{{--//                    else {--}}
-{{--//                        $("#errorMessage").show(400);--}}
-{{--//                    }--}}
-                {{--}).--}}
-                {{--error(function (response) {--}}
-                {{--});--}}
-
-    {{--});--}}
-
 
 </script>
 </body>
