@@ -176,8 +176,69 @@ class FormController extends \BaseController {
 				array_push($filteredResult, $result);
 			}
 		}
-		return $this->response("success","forms added successfully",$filteredResult);
+//		return $this->response("success","forms added successfully",$filteredResult);
+
+		$report = array();
+
+		$report['totalCount'] = $report['passageCount'] =
+		$report['stairsCount'] = $report['toiletCount']
+			= $report['waterCount'] = $report['parkingCount'] =
+		$report['waitingTimeCount'] = $report['behaviourCount'] = $report['attitudeCount'] =
+		$report['actionsCount'] =
+		$report['responseCount'] = $report['satisfactionCount'] = 0;
+
+
+		foreach($filteredResult as $result)
+		{
+
+
+			$report['totalCount']++;
+
+			switch ($result['question']) {
+				case "passage":
+					$report['passageCount'] =+ 1;
+					break;
+				case "stairs":
+					$report['stairsCount'] =+ 1;
+					break;
+				case "toilet":
+					$report['toiletCount'] =+ 1;
+					break;
+				case "water":
+					$report['waterCount'] =+ 1;
+					break;
+				case "parking":
+					$report['parkingCount'] =+ 1;
+					break;
+				case "waiting_time":
+					$report['waitingTimeCount'] =+ 1;
+					break;
+				case "behaviour":
+					$report['behaviourCount'] =+ 1;
+					break;
+				case "attitude":
+					$report['attitudeCount'] =+ 1;
+					break;
+				case "actions":
+					$report['actionsCount'] =+ 1;
+					break;
+				case "response":
+					$report['responseCount'] =+ 1;
+					break;
+				case "satisfaction":
+					$report['satisfactionCount'] =+ 1;
+					break;
+				default:
+
+			}
+
+		}
+
+		return $this->response("success","report generated", $report);
 	}
+
+
+
 
 	public function generateOutput()
 	{

@@ -83,7 +83,9 @@
 
                         <input type="submit" id="processFilesButton" value="Process Files" name="submit">
                     </form>
+                    <div id="container">
 
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,6 +104,7 @@
 <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ URL::asset('jquery.form.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ URL::asset('bower_components/highcharts/highcharts.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/material.min.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/ripples.min.js') }}"></script>
 <script>
@@ -109,6 +112,32 @@
         $.material.init();
     });
 
+
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Fruit Consumption'
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [1, 0, 4]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+    });
 
     $("#fileUploadForm").ajaxForm({url: "index.php/form/upload-form", type: 'post',
         success: function(response)
