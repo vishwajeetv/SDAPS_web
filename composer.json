@@ -6,7 +6,8 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-	  	"fojuth/plupload": "*"
+
+	  	"soapbox/laravel-formatter": "2.x"
 	},
 	"autoload": {
 		"classmap": [

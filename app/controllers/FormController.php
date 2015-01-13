@@ -1,4 +1,5 @@
 <?php
+use SoapBox\Formatter\Formatter;
 
 class FormController extends \BaseController {
 
@@ -25,28 +26,173 @@ class FormController extends \BaseController {
 	public function postProcessForms()
 	{
 		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "recognize"';
+		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export" 2>&1';
 
-		$output = shell_exec( $command );
+//		$output = shell_exec( $command );
 
-		$result = $this->generateOutput();
+		$resultGenerated = $this->generateOutput();
 
-		return $this->response("success","forms added successfully",$result);
+		$processedResult = array();
+
+		foreach($resultGenerated as $result) {
+
+
+			foreach ($result as $key => $value) {
+				$response = '';
+				$question = '';
+
+				$keySeparated = explode('_', $key);
+
+				if (!isset($keySeparated[0])) {
+					$keySeparated[0] = 99;
+				}
+
+				if (!isset($keySeparated[1])) {
+					$keySeparated[1] = 99;
+				}
+
+				if (!isset($keySeparated[2])) {
+					$keySeparated[2] = 99;
+				}
+				if (!isset($keySeparated[3])) {
+					$keySeparated[3] = 99;
+				}
+
+				if ($keySeparated[0] == '1' && $keySeparated[1] == '2') {
+					$question = "gender";
+					if($value == '1') {
+						switch ($key) {
+							case "1_2_0":
+								$response = "female";
+								break;
+							case "1_2_1":
+								$response = "male";
+								break;
+							case "1_2_2":
+								$response = "else";
+								break;
+							case "1_2_3":
+								$response = "else";
+								break;
+							default:
+								$response = "nothing";
+						}
+					}
+				} else if ($keySeparated[0] == '3' && $keySeparated[1] == '1') {
+					$question = 'number_of_appearances';
+					if($value == '1') {
+						switch ($key) {
+							case "3_1_0":
+								$response = "1-3_times";
+								break;
+							case "3_1_1":
+								$response = "3-6_times";
+								break;
+							case "3_1_2":
+								$response = "6_more_times";
+								break;
+							default:
+								$response = "nothing";
+						}
+
+					}
+				}
+
+				if ($keySeparated[0] == '2') {
+					$response = $this->generateGrade($keySeparated);
+					if($value == '1') {
+						switch ($keySeparated[0] . '_' . $keySeparated[1] . '_' . $keySeparated[2]) {
+							case "2_1_1":
+								$question = "passage";
+
+								break;
+							case "2_1_2":
+								$question = "stairs";
+								break;
+							case "2_1_3":
+								$question = "toilet";
+								break;
+							case "2_1_4":
+								$question = "water";
+								break;
+							case "2_1_5":
+								$question = "parking";
+								break;
+							case "2_2_1":
+								$question = "waiting_time";
+								break;
+							case "2_2_2":
+								$question = "behaviour";
+								break;
+							case "2_2_3":
+								$question = "attitude";
+								break;
+							case "2_2_4":
+								$question = "actions";
+								break;
+							case "2_2_5":
+								$question = "response";
+								break;
+							case "2_2_6":
+								$question = "satisfaction";
+								break;
+							default:
+								$question = "nothing";
+						}
+					}
+					else
+					{
+						$response = 'nothing';
+					}
+				}
+
+
+
+
+
+				array_push($processedResult,
+					array(
+
+						"question" => $question,
+						"response" => $response
+					)
+				);
+
+
+
+			}
+		}
+
+		$filteredResult = array();
+
+		foreach($processedResult as $result)
+		{
+			if($result['question'] == 'nothing' || $result['response'] == 'nothing' || $result['response'] == '')
+			{
+				continue;
+			}
+			else
+			{
+				array_push($filteredResult, $result);
+			}
+		}
+		return $this->response("success","forms added successfully",$filteredResult);
 	}
 
 	public function generateOutput()
 	{
-		$command = '/home/ubuntu/Projects/export_csv.sh';
+//		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export"';
 
-		$output = shell_exec( $command );
+//		$output = shell_exec( $command );
 
-// Set your CSV feed
-		$feed = '/home/ubuntu/Projects/citizen_feedback/data_5.csv';
+		// Set your CSV feed
+		$feed = '/var/www/html/pmccs_aundh/data_23.csv';
 
-// Arrays we'll use later
+		// Arrays we'll use later
 		$keys = array();
 		$newArray = array();
 
-// Function to convert CSV into associative array
+		// Function to convert CSV into associative array
 		function csvToArray($file, $delimiter) {
 			if (($handle = fopen($file, 'r')) !== FALSE) {
 				$i = 0;
@@ -61,33 +207,38 @@ class FormController extends \BaseController {
 			return $arr;
 		}
 
-// Do it
+		// Do it
 		$data = csvToArray($feed, ',');
 
-// Set number of elements (minus 1 because we shift off the first row)
+		// Set number of elements (minus 1 because we shift off the first row)
 		$count = count($data) - 1;
 
-//Use first row for names
+		//Use first row for names
 		$labels = array_shift($data);
 
 		foreach ($labels as $label) {
 			$keys[] = $label;
 		}
 
-// Add Ids, just in case we want them later
+		// Add Ids, just in case we want them later
 		$keys[] = 'id';
 
 		for ($i = 0; $i < $count; $i++) {
 			$data[$i][] = $i;
 		}
 
-// Bring it all together
+		// Bring it all together
 		for ($j = 0; $j < $count; $j++) {
 			$d = array_combine($keys, $data[$j]);
 			$newArray[$j] = $d;
 		}
-		return $newArray;
+
+		$resultGenerated = $newArray;
+
+		return $resultGenerated;
 	}
+
+
 
 	public function postUploadForm()
 	{
@@ -179,6 +330,35 @@ class FormController extends \BaseController {
 		}
 
 		return $this->response("success", "created", $uploadedResult);
+	}
+
+	/**
+	 * @param $keySeparated
+	 * @return string
+	 */
+	public function generateGrade($keySeparated)
+	{
+		switch ($keySeparated[3]) {
+			case "0":
+				$response = 'excellent';
+				break;
+			case "1":
+				$response = 'good';
+				break;
+			case "2":
+				$response = 'satisfactory';
+				break;
+			case "3":
+				$response = 'unsatisfactory';
+				break;
+			case "4":
+				$response = 'mediocre';
+				break;
+			default:
+				$response = 'nothing';
+				return $response;
+		}
+		return $response;
 	}
 
 }
