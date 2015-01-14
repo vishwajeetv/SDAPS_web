@@ -24,7 +24,59 @@
         </div>
     </div>
 
-    <div class="col-lg-1">
+    <div class="col-md-1">
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="row well page">
+            <div class="col-md-4" id="container1">
+
+            </div>
+            <div class="col-md-4" id="container2">
+
+            </div>
+            <div class="col-md-4" id="container3">
+
+            </div>
+            <div class="col-md-4" id="container4">
+
+            </div>
+            <div class="col-md-4" id="container5">
+
+            </div>
+            <div class="col-md-4" id="container6">
+
+            </div>
+            <div class="col-md-4" id="container7">
+
+            </div>
+            <div class="col-md-4" id="container8">
+
+            </div>
+            <div class="col-md-4" id="container9">
+
+            </div>
+            <div class="col-md-4" id="container10">
+
+            </div>
+            <div class="col-md-4" id="container11">
+
+            </div>
+            <div class="col-md-4" id="container12">
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="col-md-1">
 
     </div>
 </div>
@@ -43,30 +95,15 @@
 
         success: function(response)
         {
-            $(function () {
-
-                // Radialize the colors
-                Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-                    return {
-                        radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
-                        stops: [
-                            [0, color],
-                            [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                        ]
-                    };
-                });
-
-                var totalReport = response.body.total;
-                var totalReportGradeCount = totalReport.gradeCount;
-                // Build the chart
-                $('#container').highcharts({
+            function generatePieChart(totalReportGradeCount, selector, title) {
+                $(selector).highcharts({
                     chart: {
                         plotBackgroundColor: null,
                         plotBorderWidth: null,
                         plotShadow: false
                     },
                     title: {
-                        text: 'Browser market shares at a specific website, 2014'
+                        text: title
                     },
                     tooltip: {
                         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -89,20 +126,45 @@
                         type: 'pie',
                         name: 'Feedback',
                         data: [
-                            ['Mediocre',   totalReportGradeCount.mediocre],
-                            ['Unsatisfactory',  totalReportGradeCount.unsatisfactory],
-//                            {
-//                                name: 'Chrome',
-//                                y: 12.8,
-//                                sliced: true,
-//                                selected: true
-//                            },
-                            ['Satisfactory',    totalReportGradeCount.unsatisfactory],
-                            ['Good',     totalReportGradeCount.unsatisfactory],
-                            ['Excellent',   totalReportGradeCount.unsatisfactory]
+                            ['Mediocre', totalReportGradeCount.mediocre],
+                            ['Unsatisfactory', totalReportGradeCount.unsatisfactory],
+                            ['Satisfactory', totalReportGradeCount.satisfactory],
+                            ['Good', totalReportGradeCount.good],
+                            ['Excellent', totalReportGradeCount.excellent]
                         ]
                     }]
                 });
+            }
+
+            $(function () {
+
+                // Radialize the colors
+                Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+                    return {
+                        radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                        stops: [
+                            [0, color],
+                            [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                        ]
+                    };
+                });
+
+                var report = response.body;
+                var totalReportGradeCount = report.total.gradeCount;
+
+                // Build the chart
+                generatePieChart(totalReportGradeCount, "#container");
+
+
+                var i = 1;
+                $.each(report, function( criteria, count ) {
+
+                    console.log( criteria + ": " + count.gradeCount );
+
+                    generatePieChart(count.gradeCount, "#container"+i, criteria);
+                    i++;
+                });
+
             });
 
         }

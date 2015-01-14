@@ -218,30 +218,18 @@ class FormController extends \BaseController {
 		$gradesReportArray['mediocre'] = 0;
 
 
-		$report['passage']['count'] = 0;
-		$report['passage']['gradeCount'] = $gradesReportArray;
-		$report['stairs']['count'] = 0;
-		$report['stairs']['gradeCount'] = $gradesReportArray;
-		$report['water']['count'] = 0;
-		$report['water']['gradeCount'] = $gradesReportArray;
-		$report['toilet']['count'] = 0;
-		$report['toilet']['gradeCount'] = $gradesReportArray;
-		$report['parking']['count'] = 0;
-		$report['parking']['gradeCount'] = $gradesReportArray;
-		$report['waitingTime']['count'] = 0;
-		$report['waitingTime']['gradeCount'] = $gradesReportArray;
-		$report['behaviour']['count'] = 0;
-		$report['behaviour']['gradeCount'] = $gradesReportArray;
-		$report['attitude']['count'] = 0;
-		$report['attitude']['gradeCount'] = $gradesReportArray;
-		$report['actions']['count'] = 0;
-		$report['actions']['gradeCount'] = $gradesReportArray;
-		$report['response']['count'] = 0;
-		$report['response']['gradeCount'] = $gradesReportArray;
-		$report['satisfaction']['count'] = 0;
-		$report['satisfaction']['gradeCount'] = $gradesReportArray;
-		$report['total']['count'] = 0;
-		$report['total']['gradeCount'] = $gradesReportArray;
+		$report['passage']['count'] = 0;$report['passage']['gradeCount'] = $gradesReportArray;
+		$report['stairs']['count'] = 0;$report['stairs']['gradeCount'] = $gradesReportArray;
+		$report['water']['count'] = 0;$report['water']['gradeCount'] = $gradesReportArray;
+		$report['toilet']['count'] = 0;$report['toilet']['gradeCount'] = $gradesReportArray;
+		$report['parking']['count'] = 0;$report['parking']['gradeCount'] = $gradesReportArray;
+		$report['waitingTime']['count'] = 0;$report['waitingTime']['gradeCount'] = $gradesReportArray;
+		$report['behaviour']['count'] = 0;$report['behaviour']['gradeCount'] = $gradesReportArray;
+		$report['attitude']['count'] = 0;$report['attitude']['gradeCount'] = $gradesReportArray;
+		$report['actions']['count'] = 0;$report['actions']['gradeCount'] = $gradesReportArray;
+		$report['response']['count'] = 0;$report['response']['gradeCount'] = $gradesReportArray;
+		$report['satisfaction']['count'] = 0;$report['satisfaction']['gradeCount'] = $gradesReportArray;
+		$report['total']['count'] = 0;$report['total']['gradeCount'] = $gradesReportArray;
 
 
 		foreach ($filteredResult as $result) {
@@ -253,11 +241,8 @@ class FormController extends \BaseController {
 
 			switch ($result['question']) {
 				case "passage":
-
 					$report['passage']['count']++;
-
 					$report['passage']['gradeCount'] = $this->generateGradesReport($result['response'], $report['passage']['gradeCount']);
-
 					break;
 				case "stairs":
 					$report['stairs']['count']++;
