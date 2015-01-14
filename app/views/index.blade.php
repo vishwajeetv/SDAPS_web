@@ -138,7 +138,7 @@
         });
 
 
-    $("#processFilesForm").ajaxForm({url: "index.php/form/process-forms", type: 'post',
+    $("#processFilesForm").ajaxForm({url: "index.php/form/retrieve-reports", type: 'post',
 
         success: function(response)
         {
