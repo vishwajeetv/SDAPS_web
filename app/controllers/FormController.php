@@ -180,53 +180,86 @@ class FormController extends \BaseController {
 
 		$report = array();
 
-		$report['totalCount'] = $report['passageCount'] =
-		$report['stairsCount'] = $report['toiletCount']
-			= $report['waterCount'] = $report['parkingCount'] =
-		$report['waitingTimeCount'] = $report['behaviourCount'] = $report['attitudeCount'] =
-		$report['actionsCount'] =
-		$report['responseCount'] = $report['satisfactionCount'] = 0;
+
+
+		$report['passage']['count'] = 0;
+		$report['stairs']['count'] = 0;
+		$report['water']['count'] = 0;
+		$report['toilet']['count'] = 0;
+		$report['parking']['count'] = 0;
+		$report['waitingTime']['count'] = 0;
+		$report['behaviour']['count'] = 0;
+		$report['attitude']['count'] = 0;
+		$report['actions']['count'] = 0;
+		$report['response']['count'] = 0;
+		$report['satisfaction']['count'] = 0;
+		$report['total']['count'] = 0;
+
 
 
 		foreach($filteredResult as $result)
 		{
 
 
-			$report['totalCount']++;
+			$report['total']['count']++;
+
 
 			switch ($result['question']) {
 				case "passage":
-					$report['passageCount'] =+ 1;
+
+					$report['passage']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['passage']['gradeCount'] = $gradesReportArray;
+
 					break;
 				case "stairs":
-					$report['stairsCount'] =+ 1;
+					$report['stairs']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['stairs']['gradeCount'] = $gradesReportArray;
 					break;
 				case "toilet":
-					$report['toiletCount'] =+ 1;
+					$report['toilet']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['toilet']['gradeCount'] = $gradesReportArray;
 					break;
 				case "water":
-					$report['waterCount'] =+ 1;
+					$report['water']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['water']['gradeCount'] = $gradesReportArray;
 					break;
 				case "parking":
-					$report['parkingCount'] =+ 1;
+					$report['parking']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['parking']['gradeCount'] = $gradesReportArray;
 					break;
 				case "waiting_time":
-					$report['waitingTimeCount'] =+ 1;
+					$report['waitingTime']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['waitingTime']['gradeCount'] = $gradesReportArray;
 					break;
 				case "behaviour":
-					$report['behaviourCount'] =+ 1;
+					$report['behaviour']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['behaviour']['gradeCount'] = $gradesReportArray;
 					break;
 				case "attitude":
-					$report['attitudeCount'] =+ 1;
+					$report['attitude']['count']++;
+					$report['attitude']['gradeCount'] = $this->generateGradesReport($result['response']);
 					break;
 				case "actions":
-					$report['actionsCount'] =+ 1;
+					$report['actions']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['actions']['gradeCount'] = $gradesReportArray;
 					break;
 				case "response":
-					$report['responseCount'] =+ 1;
+					$report['response']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['response']['gradeCount'] = $gradesReportArray;
 					break;
 				case "satisfaction":
-					$report['satisfactionCount'] =+ 1;
+					$report['satisfaction']['count']++;
+					$gradesReportArray = $this->generateGradesReport($result['response']);
+					$report['satisfaction']['gradeCount'] = $gradesReportArray;
 					break;
 				default:
 
@@ -417,9 +450,46 @@ class FormController extends \BaseController {
 				break;
 			default:
 				$response = 'nothing';
-				return $response;
+				break;
 		}
 		return $response;
+	}
+
+	/**
+	 * @param $result
+	 * @param $gradesReportArray
+	 * @return mixed
+	 */
+	public function generateGradesReport($response)
+	{
+
+		$gradesReportArray['excellent'] = $gradesReportArray['good'] =
+		$gradesReportArray['satisfactory'] = $gradesReportArray['unsatisfactory'] =
+		$gradesReportArray['mediocre'] = 0;
+
+
+
+		switch ($response) {
+			case "excellent":
+				$gradesReportArray['excellent']++;
+				break;
+			case "good":
+				$gradesReportArray['good']++;
+				break;
+			case "satisfactory":
+				$gradesReportArray['satisfactory']++;
+				break;
+			case "unsatisfactory":
+				$gradesReportArray['unsatisfactory']++;
+				break;
+			case "mediocre":
+				$gradesReportArray['mediocre']++;
+				break;
+			default:
+				$gradesReportArray['nothing'] = 'nothing';
+				break;
+		}
+		return $gradesReportArray;
 	}
 
 }
