@@ -19,3 +19,7 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+Route::get('/reports', function()
+{
+	return View::make('reports');
+});

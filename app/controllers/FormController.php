@@ -25,8 +25,9 @@ class FormController extends \BaseController {
 
 	public function postProcessForms()
 	{
-		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "recognize"';
-		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export" 2>&1';
+//		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "recognize"';
+//		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export" 2>&1';
+		$command = 'rm "/var/www/html/pmccs_aundh/*.csv" 2>&1';
 
 		$output = shell_exec( $command );
 
