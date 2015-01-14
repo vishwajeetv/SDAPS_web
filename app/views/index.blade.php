@@ -141,7 +141,7 @@
 
         success: function(response)
         {
-            alert("success");
+           console.log(response);
 
         }
     });

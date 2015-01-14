@@ -10,9 +10,9 @@
 <body>
 
 <div class="row">
-    <div class="col-md-2"></div>
+    <div class="col-md-1"></div>
 
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="well page">
             <form action="index.php/form/retrieve-reports" id="processFilesForm" method="post">
 
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="col-lg-2">
+    <div class="col-lg-1">
 
     </div>
 </div>

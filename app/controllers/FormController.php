@@ -25,13 +25,19 @@ class FormController extends \BaseController {
 
 	public function postProcessForms()
 	{
-//		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "recognize"';
-//		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export" 2>&1';
-		$command = 'rm "/var/www/html/pmccs_aundh/*.csv" 2>&1';
+		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "recognize"';
 
-		$output = shell_exec( $command );
+		$output1 = shell_exec( $command );
 
-		return $this->response("success","processing done",null);
+		$command = '/var/www/html/sdaps/scripts/rmcsvs.sh 2>&1';
+
+		$output2 = shell_exec( $command );
+
+		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export" 2>&1';
+
+		$output3 = shell_exec( $command );
+
+		return $this->response("success","processing done",$output1.$output2.$output3);
 
 
 	}
@@ -310,7 +316,7 @@ class FormController extends \BaseController {
 //		$output = shell_exec( $command );
 
 		// Set your CSV feed
-		$feed = '/var/www/html/pmccs_aundh/data_23.csv';
+		$feed = '/var/www/html/pmccs_aundh/data_1.csv';
 
 		// Arrays we'll use later
 		$keys = array();
