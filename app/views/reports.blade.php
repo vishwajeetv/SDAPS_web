@@ -16,8 +16,10 @@
         <div class="well page">
             <form action="index.php/form/retrieve-reports" id="processFilesForm" method="post">
 
-                <input type="submit" id="retrieveReportsButton" value="Retrieve Reports" name="submit">
+                <input type="submit" id="retrieveReportsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" name="submit">
             </form>
+
+            <a class="btn btn-danger btn-lg" href="http://192.168.2.94/pmccs_aundh/data_1.csv">Export to Excel Sheet</a>
             <div id="container">
 
             </div>
@@ -33,44 +35,12 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
         <div class="row well page">
-            <div class="col-md-4" id="container1">
 
-            </div>
-            <div class="col-md-4" id="container2">
+            @for ($i = 1; $i < 13; $i++)
+                <div class="col-md-3" id="container{{$i}}">
 
-            </div>
-            <div class="col-md-4" id="container3">
-
-            </div>
-            <div class="col-md-4" id="container4">
-
-            </div>
-            <div class="col-md-4" id="container5">
-
-            </div>
-            <div class="col-md-4" id="container6">
-
-            </div>
-            <div class="col-md-4" id="container7">
-
-            </div>
-            <div class="col-md-4" id="container8">
-
-            </div>
-            <div class="col-md-4" id="container9">
-
-            </div>
-            <div class="col-md-4" id="container10">
-
-            </div>
-            <div class="col-md-4" id="container11">
-
-            </div>
-            <div class="col-md-4" id="container12">
-
-            </div>
-
-
+                </div>
+            @endfor
 
 
         </div>
@@ -153,13 +123,11 @@
                 var totalReportGradeCount = report.total.gradeCount;
 
                 // Build the chart
-                generatePieChart(totalReportGradeCount, "#container");
+                generatePieChart(totalReportGradeCount, "#container", 'Overall Report');
 
 
                 var i = 1;
                 $.each(report, function( criteria, count ) {
-
-                    console.log( criteria + ": " + count.gradeCount );
 
                     generatePieChart(count.gradeCount, "#container"+i, criteria);
                     i++;
