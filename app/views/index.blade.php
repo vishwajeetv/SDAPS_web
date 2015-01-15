@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap-material-design/dist/css/material.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap-material-design/dist/css/ripples.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('bower_components/snackbarjs/dist/snackbar.min.css') }}">
 
 </head>
 <body>
@@ -106,6 +107,7 @@
 <script src="{{ URL::asset('bower_components/highcharts/highcharts.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/material.min.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/ripples.min.js') }}"></script>
+<script src="{{ URL::asset('bower_components/snackbarjs/dist/snackbar.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $.material.init();
@@ -119,6 +121,8 @@
         {
             response.body.forEach(function(result) {
 
+                $.snackbar({content: response.header.message});
+
                 $("#fileNamesContainer").append("<div class='fileName'>"+result.fileName+"</div>");
                 $("#addFilesForm").append("<input type='hidden' class='fileName' name='fileNames[]' value='"+result.fileName+"'/>");
             });
@@ -131,7 +135,7 @@
 
             success: function(response)
             {
-                console.log(response);
+                $.snackbar({content: response.header.message});
 
             }
         });
@@ -141,7 +145,7 @@
 
         success: function(response)
         {
-           console.log(response);
+            $.snackbar({content: response.header.message});
 
         }
     });
