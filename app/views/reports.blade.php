@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap-material-design/dist/css/material.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap-material-design/dist/css/ripples.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('bower_components/pace/themes/blue/pace-theme-flash.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('bower_components/nprogress/nprogress.css') }}">
 
 </head>
 <body>
@@ -14,14 +16,28 @@
 
     <div class="col-md-10">
         <div class="well page">
-            <form action="index.php/form/retrieve-reports" id="processFilesForm" method="post">
 
-                <input type="submit" id="retrieveReportsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" name="submit">
-            </form>
 
-            <a class="btn btn-danger btn-lg" href="http://192.168.2.94/pmccs_aundh/data_1.csv">Export to Excel Sheet</a>
+            <div>
+                <form action="index.php/form/retrieve-reports" id="processFilesForm" class="pull-left" method="post">
+
+                    <input type="submit" id="retrieveReportsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" name="submit">
+                </form>
+
+                <div class="pull-right">
+                    <a class="btn btn-danger btn-lg" href="http://192.168.2.94/pmccs_aundh/data_1.csv">Export to Excel Sheet</a>
+                </div>
+            </div>
             <div id="container">
 
+            </div>
+
+            <div class="row">
+            @for ($i = 1; $i < 13; $i++)
+                <div class="col-md-3" id="container{{$i}}">
+
+                </div>
+            @endfor
             </div>
         </div>
     </div>
@@ -31,40 +47,27 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-        <div class="row well page">
-
-            @for ($i = 1; $i < 13; $i++)
-                <div class="col-md-3" id="container{{$i}}">
-
-                </div>
-            @endfor
-
-
-        </div>
-
-    </div>
-    <div class="col-md-1">
-
-    </div>
-</div>
 <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ URL::asset('jquery.form.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('bower_components/highcharts/highcharts.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/material.min.js') }}"></script>
 <script src="{{ URL::asset('bower_components/bootstrap-material-design/dist/js/ripples.min.js') }}"></script>
+<script src="{{ URL::asset('bower_components/pace/pace.min.js') }}"></script>
+<script src="{{ URL::asset('bower_components/nprogress/nprogress.js') }}"></script>
 <script>
     $(document).ready(function() {
         $.material.init();
     });
 
     $("#processFilesForm").ajaxForm({url: "index.php/form/retrieve-reports", type: 'post',
-
+        beforeSubmit: function()
+        {
+            NProgress.start();
+        },
         success: function(response)
         {
+            NProgress.done();
             function generatePieChart(totalReportGradeCount, selector, title) {
                 $(selector).highcharts({
                     chart: {
