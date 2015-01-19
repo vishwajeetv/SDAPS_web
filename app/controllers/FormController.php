@@ -195,12 +195,39 @@ class FormController extends \BaseController {
 			case "mediocre":
 				$gradesReportArray['mediocre']++;
 				break;
+			case "times_1_3":
+				$gradesReportArray['times_1_3']++;
+				break;
+			case "times_3_6":
+				$gradesReportArray['times_3_6']++;
+				break;
+			case "times_6_more":
+				$gradesReportArray['times_6_more']++;
+				break;
 			default:
 				$gradesReportArray['nothing'] = 'nothing';
 				break;
 		}
 		return $gradesReportArray;
 	}
+
+//	public function generateAppearancesReport($response, $gradesReportArray)
+//	{
+//		switch($response){
+//			case "times_1_3":
+//				$gradesReportArray['times_1_3']++;
+//				break;
+//			case "3-6_times":
+//				$gradesReportArray['3-6_times']++;
+//				break;
+//			case "times_6_more":
+//				$gradesReportArray['times_6_more']++;
+//				break;
+//			default:
+//				$gradesReportArray['nothing'] = 'nothing';
+//				break;
+//		}
+//	}
 
 	/**
 	 * @param $filteredResult
@@ -214,7 +241,8 @@ class FormController extends \BaseController {
 
 		$gradesReportArray['excellent'] = $gradesReportArray['good'] =
 		$gradesReportArray['satisfactory'] = $gradesReportArray['unsatisfactory'] =
-		$gradesReportArray['mediocre'] = 0;
+		$gradesReportArray['mediocre'] =  $gradesReportArray['times_1_3'] = $gradesReportArray['times_3_6'] =
+		$gradesReportArray['times_6_more'] = 0;
 
 
 		$report['passage']['count'] = 0;$report['passage']['gradeCount'] = $gradesReportArray;
@@ -228,11 +256,13 @@ class FormController extends \BaseController {
 		$report['actions']['count'] = 0;$report['actions']['gradeCount'] = $gradesReportArray;
 		$report['response']['count'] = 0;$report['response']['gradeCount'] = $gradesReportArray;
 		$report['satisfaction']['count'] = 0;$report['satisfaction']['gradeCount'] = $gradesReportArray;
+		$report['number_of_appearances']['count'] = 0;$report['number_of_appearances']['gradeCount'] = $gradesReportArray;
 		$report['total']['count'] = 0;$report['total']['gradeCount'] = $gradesReportArray;
 
 
 		foreach ($filteredResult as $result) {
 
+//			print_r($result);
 
 			$report['total']['count']++;
 
@@ -283,6 +313,10 @@ class FormController extends \BaseController {
 				case "satisfaction":
 					$report['satisfaction']['count']++;
 					$report['satisfaction']['gradeCount'] = $this->generateGradesReport($result['response'], $report['satisfaction']['gradeCount']);
+					break;
+				case "number_of_appearances":
+					$report['number_of_appearances']['count']++;
+					$report['number_of_appearances']['gradeCount'] = $this->generateGradesReport($result['response'], $report['number_of_appearances']['gradeCount']);
 					break;
 				default:
 
@@ -431,13 +465,13 @@ class FormController extends \BaseController {
 					if ($value == '1') {
 						switch ($key) {
 							case "3_1_0":
-								$response = "1-3_times";
+								$response = "times_1_3";
 								break;
 							case "3_1_1":
-								$response = "3-6_times";
+								$response = "times_3_6";
 								break;
 							case "3_1_2":
-								$response = "6_more_times";
+								$response = "times_6_more";
 								break;
 							default:
 								$response = "nothing";

@@ -1,5 +1,3 @@
-
-
 <html>
 <head>
     <link rel="stylesheet" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -31,7 +29,10 @@
             <div id="container">
 
             </div>
-
+            
+            <div id="frequencyGraphContainer">
+            </div>
+            
             <div class="row">
             @for ($i = 1; $i < 13; $i++)
                 <div class="col-md-3" id="container{{$i}}">
@@ -68,6 +69,50 @@
         success: function(response)
         {
             NProgress.done();
+
+              function generateBarChart(totalReportGradeCount, selector, title) {
+                  $(selector).highcharts({
+                      chart: {
+                          plotBackgroundColor: null,
+                          plotBorderWidth: null,
+                          plotShadow: false
+                      },
+                      title: {
+                          text: title
+                      },
+                      xAxis: {
+                          categories: ['times_1_3', '3-6_times', '6_more_times']
+                      },
+                      tooltip: {
+                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                      },
+                      plotOptions: {
+                          pie: {
+                              allowPointSelect: true,
+                              cursor: 'pointer',
+                              dataLabels: {
+                                  enabled: true,
+                                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                  style: {
+                                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                  },
+                                  connectorColor: 'silver'
+                              }
+                          }
+                      },
+                      series: [{
+                          type: 'bar',
+                          name: 'Feedback',
+                          colorByPoint: true,
+                          data: [
+
+                              ['times_1_3', totalReportGradeCount.times_1_3],
+                              ['3-6_times', totalReportGradeCount.times_3_6],
+                              ['6_more_times', totalReportGradeCount.times_6_more]
+                          ]
+                      }]
+                  });
+              };
             function generatePieChart(totalReportGradeCount, selector, title) {
                 $(selector).highcharts({
                     chart: {
@@ -77,6 +122,9 @@
                     },
                     title: {
                         text: title
+                    },
+                    xAxis: {
+                        categories: ['Mediocre', 'Unsatisfactory', 'Satisfactory', 'Good', 'Excellent']
                     },
                     tooltip: {
                         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -96,8 +144,9 @@
                         }
                     },
                     series: [{
-                        type: 'pie',
+                        type: 'bar',
                         name: 'Feedback',
+                        colorByPoint: true,
                         data: [
                             ['Mediocre', totalReportGradeCount.mediocre],
                             ['Unsatisfactory', totalReportGradeCount.unsatisfactory],
@@ -107,6 +156,8 @@
                         ]
                     }]
                 });
+
+              
             }
 
             $(function () {
@@ -128,10 +179,13 @@
                 // Build the chart
                 generatePieChart(totalReportGradeCount, "#container", 'Overall Report');
 
-
+                generateBarChart(totalReportGradeCount, "#frequencyGraphContainer", "Frequency Report");
                 var i = 1;
                 $.each(report, function( criteria, count ) {
-
+                    if(i==12)
+                    {
+                        return;
+                    }
                     generatePieChart(count.gradeCount, "#container"+i, criteria);
                     i++;
                 });
