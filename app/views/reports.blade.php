@@ -29,16 +29,16 @@
             <div id="container">
 
             </div>
-            
+
             <div id="frequencyGraphContainer">
             </div>
-            
-            <div class="row">
-            @for ($i = 1; $i < 13; $i++)
-                <div class="col-md-3" id="container{{$i}}">
 
-                </div>
-            @endfor
+            <div class="row">
+                @for ($i = 1; $i < 13; $i++)
+                    <div class="col-md-3" id="container{{$i}}">
+
+                    </div>
+                @endfor
             </div>
         </div>
     </div>
@@ -61,6 +61,7 @@
         $.material.init();
     });
 
+
     $("#processFilesForm").ajaxForm({url: "index.php/form/retrieve-reports", type: 'post',
         beforeSubmit: function()
         {
@@ -68,52 +69,79 @@
         },
         success: function(response)
         {
+            console.log(response);
+
             NProgress.done();
 
-              function generateBarChart(totalReportGradeCount, selector, title) {
-                  $(selector).highcharts({
-                      chart: {
-                          plotBackgroundColor: null,
-                          plotBorderWidth: null,
-                          plotShadow: false
-                      },
-                      title: {
-                          text: title
-                      },
-                      xAxis: {
-                          categories: ['times_1_3', '3-6_times', '6_more_times']
-                      },
-                      tooltip: {
-                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                      },
-                      plotOptions: {
-                          pie: {
-                              allowPointSelect: true,
-                              cursor: 'pointer',
-                              dataLabels: {
-                                  enabled: true,
-                                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                  style: {
-                                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                                  },
-                                  connectorColor: 'silver'
-                              }
-                          }
-                      },
-                      series: [{
-                          type: 'bar',
-                          name: 'Feedback',
-                          colorByPoint: true,
-                          data: [
+            var report = response.body;
+            var totalReportGradeCount = report.total.gradeCount;
+            var totalCount = report.total.count;
 
-                              ['times_1_3', totalReportGradeCount.times_1_3],
-                              ['3-6_times', totalReportGradeCount.times_3_6],
-                              ['6_more_times', totalReportGradeCount.times_6_more]
-                          ]
-                      }]
-                  });
-              };
-            function generatePieChart(totalReportGradeCount, selector, title) {
+            function generateBarChart(totalReportGradeCount, totalCount,selector, title) {
+                $(selector).highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false
+                    },
+                    title: {
+                        text: title
+                    },
+                    xAxis: {
+                        categories: ['times_1_3', '3-6_times', '6_more_times']
+                    },
+                    yAxis: {
+                        labels: {
+                            formatter:function() {
+                                var pcnt = (this.value / totalCount) * 100;
+                                return Highcharts.numberFormat(pcnt,0,',') + '%';
+                            }
+                        }
+                    },
+                    tooltip: {
+
+//                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        formatter: function () {
+                            var pcnt = (this.y / totalCount) * 100;
+                            return Highcharts.numberFormat(pcnt) + '%';
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                            shadow: false,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function () {
+                                    var pcnt = (this.y / totalCount) * 100;
+                                    return Highcharts.numberFormat(pcnt) + '%';
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'bar',
+                        name: 'Feedback',
+                        colorByPoint: true,
+                        data: [
+
+                            ['times_1_3', totalReportGradeCount.times_1_3],
+                            ['3-6_times', totalReportGradeCount.times_3_6],
+                            ['6_more_times', totalReportGradeCount.times_6_more]
+                        ]
+                    }]
+                });
+            };
+
+
+//            var report = response.body;
+//            var totalReportGradeCount = report.total.gradeCount;
+//            var totalCount = report.total.count;
+
+
+            generatePieChart(totalReportGradeCount, totalCount, "#container", 'Overall Report');
+
+            function generatePieChart(totalReportGradeCount, totalCount, selector, title) {
                 $(selector).highcharts({
                     chart: {
                         plotBackgroundColor: null,
@@ -126,20 +154,32 @@
                     xAxis: {
                         categories: ['Mediocre', 'Unsatisfactory', 'Satisfactory', 'Good', 'Excellent']
                     },
+                    yAxis: {
+                        labels: {
+                            formatter:function() {
+                                var pcnt = (this.value / totalCount) * 100;
+                                return Highcharts.numberFormat(pcnt,0,',') + '%';
+                            }
+                        }
+                    },
+
                     tooltip: {
-                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        formatter: function () {
+                            var pcnt = (this.y / totalCount) * 100;
+                            return Highcharts.numberFormat(pcnt) + '%';
+                        }
                     },
                     plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
+                        series: {
+                            shadow: false,
+                            borderWidth: 0,
                             dataLabels: {
                                 enabled: true,
-                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                style: {
-                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                                },
-                                connectorColor: 'silver'
+                                formatter: function () {
+                                    var pcnt = (this.y / totalCount) * 100;
+                                    return Highcharts.numberFormat(pcnt) + '%';
+                                }
                             }
                         }
                     },
@@ -157,7 +197,7 @@
                     }]
                 });
 
-              
+
             }
 
             $(function () {
@@ -173,20 +213,20 @@
                     };
                 });
 
-                var report = response.body;
-                var totalReportGradeCount = report.total.gradeCount;
 
-                // Build the chart
-                generatePieChart(totalReportGradeCount, "#container", 'Overall Report');
 
-                generateBarChart(totalReportGradeCount, "#frequencyGraphContainer", "Frequency Report");
+
+//                Build the chart
+
+                generatePieChart(totalReportGradeCount, totalCount, "#container", 'Overall Report');
+                generateBarChart(report.number_of_appearances.gradeCount, report.number_of_appearances.count, "#frequencyGraphContainer", "Frequency Report");
                 var i = 1;
                 $.each(report, function( criteria, count ) {
                     if(i==12)
                     {
                         return;
                     }
-                    generatePieChart(count.gradeCount, "#container"+i, criteria);
+                    generatePieChart(count.gradeCount, count.count, "#container"+i, criteria);
                     i++;
                 });
 
