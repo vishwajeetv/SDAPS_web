@@ -91,7 +91,39 @@ class FormController extends \BaseController {
 		return $this->response("success","results retrieval done",$processedResult);
 	}
 
-	public function postConsolidateAllResults()
+	public function postAddFileNamesToConsolidatedResults()
+	{
+		$filteredResults = $this->consolidateAllResults();
+
+
+		$i = 0;
+//		for($i = 0; $i < sizeof($filteredResults); $i++)
+//		{
+//			$file = array("fileName" => "das");
+//			$filteredResults['file'] = $file;
+//
+//		}
+$results = array();
+		$i=0;
+		foreach($filteredResults as $result)
+		{
+
+			$results[$i]['responses'] = $result;
+			$results[$i]['fileName'] = $i;
+
+			$results[$i]['name'] = "";
+			$results[$i]['surname'] = "";
+			$results[$i]['address'] = "";
+			$results[$i]['meeting_reason'] = "";
+			$results[$i]['mobile'] = "";
+			$results[$i]['email'] = "";
+
+			$i++;
+		}
+		return $this->response("success","file names added",$results);
+
+	}
+	public function consolidateAllResults()
 	{
 
 
@@ -100,9 +132,7 @@ class FormController extends \BaseController {
 		$processedConsolidatedResult = $this->generateConsolidatedResult($processedResult);
 		$filteredResult = $this->filterConsolidatedResult($processedConsolidatedResult);
 
-//		$reports = $this->generateReports($filteredResult);
-
-		return $this->response("success","results retrieval done",$filteredResult);
+		return $filteredResult;
 
 	}
 
@@ -492,7 +522,7 @@ class FormController extends \BaseController {
 						array_push($filteredResult, $result);
 					}
 				}
-				array_push($consolidatedFilteredResult, [$filteredResult]);
+				array_push($consolidatedFilteredResult, $filteredResult);
 			}
 
 		return $consolidatedFilteredResult;
