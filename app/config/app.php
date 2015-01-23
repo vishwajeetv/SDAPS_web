@@ -121,7 +121,7 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-		'Fojuth\Plupload\PluploadServiceProvider'
+        'Jenssegers\Mongodb\MongodbServiceProvider'
 
 	),
 
@@ -189,6 +189,7 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+        'Moloquent'       	=> 'Jenssegers\Mongodb\Model',
 
 	),
 

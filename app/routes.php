@@ -11,8 +11,9 @@
 |
 */
 
-
 Route::controller( 'form', 'FormController');
+//Route::get('/show', 'FormController@show');
+
 
 Route::get('/', function()
 {
@@ -23,3 +24,4 @@ Route::get('/reports', function()
 {
 	return View::make('reports');
 });
+

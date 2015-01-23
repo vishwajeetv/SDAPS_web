@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('ubuntu-pmc'),
+	'local' => array('aparna-Lenovo-B480'),
 
 ));
 

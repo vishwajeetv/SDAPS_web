@@ -4,6 +4,15 @@ use SoapBox\Formatter\Formatter;
 class FormController extends \BaseController {
 
 
+    public function postShow()
+    {
+//        $data = DB::collection('dept')->get();
+////        return View::make('show');
+//        return View::make('form.show')->with('data', $data);
+        $data = Department::all();
+
+        return $this->response("success","forms added successfully",$data);
+    }
 	public function postAddForms()
 	{
 

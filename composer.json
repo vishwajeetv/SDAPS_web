@@ -7,7 +7,9 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 
-	  	"soapbox/laravel-formatter": "2.x"
+	  	"soapbox/laravel-formatter": "2.x",
+		"jenssegers/mongodb": "~2.0",
+		"barryvdh/laravel-cors": "0.2.x"
 	},
 	"autoload": {
 		"classmap": [

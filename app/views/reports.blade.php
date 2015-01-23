@@ -88,7 +88,7 @@
                         text: title
                     },
                     xAxis: {
-                        categories: ['times_1_3', '3-6_times', '6_more_times']
+                        categories: ['1-3 times', '3-6 times', 'more than 6 times']
                     },
                     yAxis: {
                         labels: {
@@ -121,7 +121,6 @@
                     },
                     series: [{
                         type: 'bar',
-                        name: 'Feedback',
                         colorByPoint: true,
                         data: [
 
@@ -185,7 +184,6 @@
                     },
                     series: [{
                         type: 'bar',
-                        name: 'Feedback',
                         colorByPoint: true,
                         data: [
                             ['Mediocre', totalReportGradeCount.mediocre],

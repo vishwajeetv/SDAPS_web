@@ -30,7 +30,13 @@ return array(
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 		),
-
+        'mongodb' => array(
+            'driver'   => 'mongodb',
+            'host'     => 'localhost',
+            'username' => '',
+            'password' => '',
+            'database' => 'Departments'
+        ),
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
