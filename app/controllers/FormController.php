@@ -4,6 +4,14 @@ use SoapBox\Formatter\Formatter;
 class FormController extends \BaseController {
 
 
+	public function postQueue()
+	{
+		$message = array('key' => 'value');
+
+		Queue::push('FormProcessJob', array('message' => $message));
+
+		return $this->response("success","added to queue",$message);
+	}
     public function postShow()
     {
 //        $data = DB::collection('dept')->get();
@@ -50,18 +58,53 @@ class FormController extends \BaseController {
 
 	}
 
+	public function getPDFPages($document)
+	{
+
+
+		// Parse entire output
+		exec("pdfinfo $document", $output);
+
+		// Iterate through lines
+		$pageCount = 0;
+		foreach($output as $op)
+		{
+			// Extract the number
+			if(preg_match("/Pages:\s*(\d+)/i", $op, $matches) === 1)
+			{
+				$pageCount = intval($matches[1]);
+				break;
+			}
+		}
+
+		return $pageCount;
+	}
+
 	public function postRetrieveReports()
 	{
+
 		$processedResult = $this->generateResult();
-
-
 		$filteredResult = $this->filterResult($processedResult);
 
 		$reports = $this->generateReports($filteredResult);
 
-		return $this->response("success","results retrieval done",$reports);
+		return $this->response("success","results retrieval done",$processedResult);
 	}
 
+	public function postConsolidateAllResults()
+	{
+
+
+		$processedResult = $this->generateResult();
+
+		$processedConsolidatedResult = $this->generateConsolidatedResult($processedResult);
+		$filteredResult = $this->filterConsolidatedResult($processedConsolidatedResult);
+
+//		$reports = $this->generateReports($filteredResult);
+
+		return $this->response("success","results retrieval done",$filteredResult);
+
+	}
 
 	public function postUploadForm()
 	{
@@ -129,11 +172,18 @@ class FormController extends \BaseController {
 						array_push($uploadMessages, array(
 							"successUpload" => "The file has been successfully uploaded"
 						));
+
+						$fileName = $targetFile;
+
+						$totalPages = $this->getPDFPages($fileName);
+
 						array_push($uploadedResult,
 							array(
 								"fileName" => basename($file["name"]),
 								"uploadStatus" => "success",
-								"message" => $uploadMessages
+								"message" => $uploadMessages,
+								"totalPages" => $totalPages
+
 							));
 
 					} else {
@@ -152,8 +202,14 @@ class FormController extends \BaseController {
 			}
 		}
 
+
+
+
 		return $this->response("success", "created", $uploadedResult);
 	}
+
+
+
 
 	/**
 	 * @param $keySeparated
@@ -248,6 +304,7 @@ class FormController extends \BaseController {
 
 		$gradesReportArray = array();
 
+
 		$gradesReportArray['excellent'] = $gradesReportArray['good'] =
 		$gradesReportArray['satisfactory'] = $gradesReportArray['unsatisfactory'] =
 		$gradesReportArray['mediocre'] =  $gradesReportArray['times_1_3'] = $gradesReportArray['times_3_6'] =
@@ -267,6 +324,7 @@ class FormController extends \BaseController {
 		$report['satisfaction']['count'] = 0;$report['satisfaction']['gradeCount'] = $gradesReportArray;
 		$report['number_of_appearances']['count'] = 0;$report['number_of_appearances']['gradeCount'] = $gradesReportArray;
 		$report['total']['count'] = 0;$report['total']['gradeCount'] = $gradesReportArray;
+
 
 
 		foreach ($filteredResult as $result) {
@@ -353,22 +411,10 @@ class FormController extends \BaseController {
 		$newArray = array();
 
 		// Function to convert CSV into associative array
-		function csvToArray($file, $delimiter) {
-			if (($handle = fopen($file, 'r')) !== FALSE) {
-				$i = 0;
-				while (($lineArray = fgetcsv($handle, 4000, $delimiter, '"')) !== FALSE) {
-					for ($j = 0; $j < count($lineArray); $j++) {
-						$arr[$i][$j] = $lineArray[$j];
-					}
-					$i++;
-				}
-				fclose($handle);
-			}
-			return $arr;
-		}
+
 
 		// Do it
-		$data = csvToArray($feed, ',');
+		$data = $this->csvToArray($feed, ',');
 
 		// Set number of elements (minus 1 because we shift off the first row)
 		$count = count($data) - 1;
@@ -398,6 +444,20 @@ class FormController extends \BaseController {
 		return $resultGenerated;
 	}
 
+	public function csvToArray($file, $delimiter) {
+		if (($handle = fopen($file, 'r')) !== FALSE) {
+			$i = 0;
+			while (($lineArray = fgetcsv($handle, 4000, $delimiter, '"')) !== FALSE) {
+				for ($j = 0; $j < count($lineArray); $j++) {
+					$arr[$i][$j] = $lineArray[$j];
+				}
+				$i++;
+			}
+			fclose($handle);
+		}
+		return $arr;
+	}
+
 	/**
 	 * @param $processedResult
 	 * @return mixed
@@ -415,6 +475,30 @@ class FormController extends \BaseController {
 		}
 		return $filteredResult;
 	}
+
+	public function filterConsolidatedResult($processedResults)
+	{
+		$filteredResult = array();
+
+		$consolidatedFilteredResult = array();
+
+
+			foreach ($processedResults as $processedResult) {
+				foreach ($processedResult as $result) {
+					if ($result['question'] == 'nothing' || $result['response'] == 'nothing' || $result['response'] == '') {
+						continue;
+					} else {
+						array_push($filteredResult, $result);
+					}
+				}
+				array_push($consolidatedFilteredResult, [$filteredResult]);
+			}
+
+		return $consolidatedFilteredResult;
+	}
+
+
+
 
 	/**
 	 * @return array
@@ -537,7 +621,6 @@ class FormController extends \BaseController {
 
 				array_push($processedResult,
 					array(
-
 						"question" => $question,
 						"response" => $response
 					)
@@ -547,5 +630,134 @@ class FormController extends \BaseController {
 		return $processedResult;
 	}
 
+	public function generateConsolidatedResult()
+	{
+		$resultGenerated = $this->generateOutput();
+
+		$processedResult = array();
+
+		$consolidatedProcessedResult = array();
+
+		foreach ($resultGenerated as $result) {
+
+
+			foreach ($result as $key => $value) {
+				$response = '';
+				$question = '';
+
+				$keySeparated = explode('_', $key);
+
+				if (!isset($keySeparated[0])) {
+					$keySeparated[0] = 99;
+				}
+
+				if (!isset($keySeparated[1])) {
+					$keySeparated[1] = 99;
+				}
+
+				if (!isset($keySeparated[2])) {
+					$keySeparated[2] = 99;
+				}
+				if (!isset($keySeparated[3])) {
+					$keySeparated[3] = 99;
+				}
+
+				if ($keySeparated[0] == '1' && $keySeparated[1] == '2') {
+					$question = "gender";
+					if ($value == '1') {
+						switch ($key) {
+							case "1_2_0":
+								$response = "female";
+								break;
+							case "1_2_1":
+								$response = "male";
+								break;
+							case "1_2_2":
+								$response = "else";
+								break;
+							case "1_2_3":
+								$response = "else";
+								break;
+							default:
+								$response = "nothing";
+						}
+					}
+				} else if ($keySeparated[0] == '3' && $keySeparated[1] == '1') {
+					$question = 'number_of_appearances';
+					if ($value == '1') {
+						switch ($key) {
+							case "3_1_0":
+								$response = "times_1_3";
+								break;
+							case "3_1_1":
+								$response = "times_3_6";
+								break;
+							case "3_1_2":
+								$response = "times_6_more";
+								break;
+							default:
+								$response = "nothing";
+						}
+
+					}
+				}
+
+				if ($keySeparated[0] == '2') {
+					$response = $this->generateGrade($keySeparated);
+					if ($value == '1') {
+						switch ($keySeparated[0] . '_' . $keySeparated[1] . '_' . $keySeparated[2]) {
+							case "2_1_1":
+								$question = "passage";
+
+								break;
+							case "2_1_2":
+								$question = "stairs";
+								break;
+							case "2_1_3":
+								$question = "toilet";
+								break;
+							case "2_1_4":
+								$question = "water";
+								break;
+							case "2_1_5":
+								$question = "parking";
+								break;
+							case "2_2_1":
+								$question = "waiting_time";
+								break;
+							case "2_2_2":
+								$question = "behaviour";
+								break;
+							case "2_2_3":
+								$question = "attitude";
+								break;
+							case "2_2_4":
+								$question = "actions";
+								break;
+							case "2_2_5":
+								$question = "response";
+								break;
+							case "2_2_6":
+								$question = "satisfaction";
+								break;
+							default:
+								$question = "nothing";
+						}
+					} else {
+						$response = 'nothing';
+					}
+				}
+
+				array_push($processedResult,
+					array(
+						"question" => $question,
+						"response" => $response
+					)
+				);
+			}
+			array_push($consolidatedProcessedResult, $processedResult);
+		}
+		return $consolidatedProcessedResult;
+	}
 
 }
