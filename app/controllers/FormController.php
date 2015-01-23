@@ -484,6 +484,7 @@ class FormController extends \BaseController {
 
 
 			foreach ($processedResults as $processedResult) {
+				$filteredResult = array();
 				foreach ($processedResult as $result) {
 					if ($result['question'] == 'nothing' || $result['response'] == 'nothing' || $result['response'] == '') {
 						continue;
@@ -640,7 +641,7 @@ class FormController extends \BaseController {
 
 		foreach ($resultGenerated as $result) {
 
-
+			$processedResult = array();
 			foreach ($result as $key => $value) {
 				$response = '';
 				$question = '';
