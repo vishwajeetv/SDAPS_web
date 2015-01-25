@@ -1,55 +1,30 @@
 <html>
 <head>
 	<title></title>
+	<link rel="stylesheet" type="text/css" href="../styles/style.css">
 </head>
-<style type="text/css">
-	body
-	{
-		font-family: sans-serif;
-		margin: 0;
-		padding: 0;
-	}
-	.container
-	{
-		/*width: 100%;*/
-	}
-	.left
-	{
-		/*width: 40%;*/
-		background: gray;
-	}
-	.right
-	{
-		background: #e3e3e3;
-		padding: 10px;
-		/*width: 80%*/
-	}
-	label
-	{
-		display: block;
-		margin-bottom: 5px;
-	}
-</style>
 <body>
-	<div layout="row" class="container">
-	  	<div flex class="left">
-	    	<p><button>Upload</button></p>
-	    	<p><button>Process</button></p>
-	  	</div>
-	  	<div flex class="right">
-	  		<label>Choose Department-</label>
-		   	<select>
+<div class="container">
+	<div class="header">
+		<center> Citizen Feedback System</center>
+	</div>
+	<div class="main">
+		<div class="content">
+			<label>Select Department</label>
+			<select id="dept_list">
 				<option ng-repeat="department in departments" value="{{department.dept_name}}">
 					{{department.dept_name}}
 				</option>
 			</select>
-	  	</div>
-  </div>
+			<label class="browselbl">Choose folder</label>
+			<input type="text" name="browse" id="browse">
+			<input type="button" value="...">
+			<button class="uploadbtn">
+				<img src="images/upload_icon.png" alt="" class="upload_icon">Upload</button>
+			<button class="cancelbtn">Cancel</button>
+			<button class="processbtn">Process Files</button>
+		</div>
+	</div>
+</div>
 </body>
 </html>
-
-<!--  <select>
-		<option ng-repeat="department in departments" value="{{department.dept_name}}">
-			{{department.dept_name}}
-		</option>
-</select> -->
