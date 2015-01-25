@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('aparna-Lenovo-B480'),
+	'local' => array('vishwajeet-Lenovo-B490'),
 
 ));
 
