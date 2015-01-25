@@ -62,7 +62,7 @@
     });
 
 
-    $("#processFilesForm").ajaxForm({url: "index.php/form/retrieve-reports", type: 'post',
+    $("#processFilesForm").ajaxForm({url: "index.php/form/generate-reports-from-db", type: 'post',
         beforeSubmit: function()
         {
             NProgress.start();
@@ -77,7 +77,7 @@
             var totalReportGradeCount = report.total.gradeCount;
             var totalCount = report.total.count;
 
-            function generateBarChart(totalReportGradeCount, totalCount,selector, title) {
+            function generateFrequencyChart(totalReportGradeCount, totalCount,selector, title) {
                 $(selector).highcharts({
                     chart: {
                         plotBackgroundColor: null,
@@ -138,9 +138,9 @@
 //            var totalCount = report.total.count;
 
 
-            generatePieChart(totalReportGradeCount, totalCount, "#container", 'Overall Report');
+            generateFeedbackChart(totalReportGradeCount, totalCount, "#container", 'Overall Report');
 
-            function generatePieChart(totalReportGradeCount, totalCount, selector, title) {
+            function generateFeedbackChart(totalReportGradeCount, totalCount, selector, title) {
                 $(selector).highcharts({
                     chart: {
                         plotBackgroundColor: null,
@@ -211,20 +211,16 @@
                     };
                 });
 
+                generateFeedbackChart(totalReportGradeCount, totalCount, "#container", 'Overall Report');
 
-
-
-//                Build the chart
-
-                generatePieChart(totalReportGradeCount, totalCount, "#container", 'Overall Report');
-                generateBarChart(report.number_of_appearances.gradeCount, report.number_of_appearances.count, "#frequencyGraphContainer", "Frequency Report");
+                generateFrequencyChart(report.number_of_appearances.gradeCount, report.number_of_appearances.count, "#frequencyGraphContainer", "Frequency Report");
                 var i = 1;
                 $.each(report, function( criteria, count ) {
                     if(i==12)
                     {
                         return;
                     }
-                    generatePieChart(count.gradeCount, count.count, "#container"+i, criteria);
+                    generateFeedbackChart(count.gradeCount, count.count, "#container"+i, criteria);
                     i++;
                 });
 
