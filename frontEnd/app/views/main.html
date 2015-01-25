@@ -1,9 +1,4 @@
-<html>
-<head>
-	<title></title>
 	<link rel="stylesheet" type="text/css" href="../styles/style.css">
-</head>
-<body>
 <div class="container">
 	<div class="header">
 		<center> Citizen Feedback System</center>
@@ -19,6 +14,7 @@
 			<label class="browselbl">Choose folder</label>
 			<input type="text" name="browse" id="browse">
 			<input type="button" value="...">
+
 			<button class="uploadbtn">
 				<img src="images/upload_icon.png" alt="" class="upload_icon">Upload</button>
 			<button class="cancelbtn">Cancel</button>
@@ -26,5 +22,12 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
+
+	Select File: <div class="button" ng-file-select ng-model="files">Select File</div>
+
+	Drop File: <div ng-file-drop ng-model="files" class="drop-box"
+					drag-over-class="dragover" multiple="true"
+					allow-dir="true" accept="image/*,application/pdf">
+		Drop Images or PDFs files here
+	</div>
+	<div ng-no-file-drop>File Farg/Drop is not supported for this browser</div>

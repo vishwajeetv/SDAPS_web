@@ -15,7 +15,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-      'restangular'
+      'restangular',
+        'angularFileUpload'
   ])
     .config(function(RestangularProvider) {
         RestangularProvider.setBaseUrl('http://localhost:8000');

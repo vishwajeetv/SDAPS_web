@@ -91,7 +91,7 @@ class FormController extends \BaseController {
 		return $this->response("success","results retrieval done",$processedResult);
 	}
 
-	public function postAddFileNamesToConsolidatedResults()
+	public function addFileNamesToConsolidatedResults()
 	{
 		$filteredResults = $this->consolidateAllResults();
 
@@ -103,7 +103,7 @@ class FormController extends \BaseController {
 //			$filteredResults['file'] = $file;
 //
 //		}
-$results = array();
+		$results = array();
 		$i=0;
 		foreach($filteredResults as $result)
 		{
@@ -120,7 +120,63 @@ $results = array();
 
 			$i++;
 		}
-		return $this->response("success","file names added",$results);
+		return $results;
+
+	}
+
+	public function postStoreConsolidatedResults()
+	{
+		$results = $this->addFileNamesToConsolidatedResults();
+
+		foreach($results as $result)
+		{
+			$feedback = new Feedback;
+			$feedback->form = $result;
+			$feedback->save();
+		}
+
+		$feedbacks = Feedback::all();
+		return $this->response("success","stored",$feedbacks);
+	}
+
+	public function postRetrieveConsolidatedResults()
+	{
+		$feedbacks = Feedback::all();
+
+		return $this->response("success","consolidated results retrieved",$feedbacks);
+	}
+
+
+	public function retrieveGranualData()
+	{
+		$feedbacks = Feedback::all();
+
+		$granualResults = array();
+		foreach($feedbacks as $feedback)
+		{
+
+			$responses = $feedback['response']['responses'];
+
+			if (is_array($responses))
+			{
+				foreach ($responses as $response)
+				{
+					array_push($granualResults, $response);
+				}
+			}
+		}
+		return $granualResults;
+	}
+
+	public function postGenerateReportsFromDb()
+	{
+		//Retrieve granual data from DB
+		$granualData = $this->retrieveGranualData();
+
+		//generate reports using it.
+		$reports = $this->generateReports($granualData);
+
+		return $this->response("success",'results retrieved',$reports);
 
 	}
 	public function consolidateAllResults()
@@ -431,7 +487,8 @@ $results = array();
 //		$output = shell_exec( $command );
 
 		// Set your CSV feed
-		$feed = '/var/www/html/pmccs_aundh/data_1.csv';
+//		$feed = '/var/www/html/pmccs_aundh/data_1.csv';
+		$feed = '/root/PhpstormProjects/SDAPS_web/data_1.csv';
 
 		/*
 		 * Don't touch this code.
