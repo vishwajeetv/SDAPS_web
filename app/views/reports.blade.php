@@ -79,6 +79,9 @@
 
             function generateFrequencyChart(totalReportGradeCount, totalCount,selector, title) {
                 $(selector).highcharts({
+                    credits: {
+                        enabled: false
+                    },
                     chart: {
                         plotBackgroundColor: null,
                         plotBorderWidth: null,
@@ -142,6 +145,9 @@
 
             function generateFeedbackChart(totalReportGradeCount, totalCount, selector, title) {
                 $(selector).highcharts({
+                    credits: {
+                        enabled: false
+                    },
                     chart: {
                         plotBackgroundColor: null,
                         plotBorderWidth: null,
