@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 7/1/15
+ * Time: 8:02 PM
+ */
+
+
+//$uploaddir = '/home/ubuntu/Projects/citizen_feedback';
+$uploaddir = '/var/www/html/sdaps/Uploads/';
+$uploadfile = $uploaddir . basename($_FILES['file']['name']);
+
+echo '<pre>';
+//if (move_uploaded_file($_FILES['userfile']['name'], $uploadfile)) {
+//    echo "File is valid, and was successfully uploaded.\n";
+//} else {
+//    echo "Failure\n";
+//}
+//$uploadSuccess=move_uploaded_file($_FILES['userfile']['name'], $uploadfile);
+
+
+if( $_FILES['file']['name'] != "" )
+{
+   copy( $_FILES['file']['name'], "/Uploads" ) or
+    die( "Could not copy file!");
+}
+else
+{
+    die("No file specified!");
+}
+
+
+//echo '\nHere is some more debugging info:';
+//print_r($_FILES);
+//print_r($_FILES['userfile']['error']);
+//echo $uploadfile;
+//print "</pre>";
+
+//
+//$command = '/home/ubuntu/Projects/add_forms.sh';
+//
+//
+//
+//
+//header('Content-type: application/json');
+//
+//$output = shell_exec( $command );
+//
+//echo json_encode($output);
+
+?>
