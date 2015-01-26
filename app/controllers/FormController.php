@@ -294,7 +294,21 @@ class FormController extends \BaseController {
 		return $this->response("success", "created", $uploadedResult);
 	}
 
+	public function postCreateFormRecords()
+	{
+		$feedbackIds = array();
 
+		for( $i = 0 ; $i < 3 ; $i++ )
+		{
+			$feedback = new Feedback;
+
+			$feedback->save();
+
+			array_push($feedbackIds, $feedback['_id']);
+		}
+
+		return $this->response("success",'created records',$feedbackIds);
+	}
 
 
 	/**

@@ -9,8 +9,18 @@ class FormProcessJob {
 
     public function fire($job, $data)
     {
-        $value = $data['message']['key'];
-        Log::info($value.time());
+        for( $i = 0; $i < 3; $i++)
+        {
+            $value = $data['message']['key'];
+            Log::info($value.time());
+
+            if($i == 2)
+            {
+                $job->delete();
+            }
+
+        }
+
     }
 
 }
