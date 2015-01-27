@@ -3,6 +3,12 @@ use SoapBox\Formatter\Formatter;
 
 class FormController extends \BaseController {
 
+	public function postStartListener()
+	{
+
+		$output = shell_exec("cd /var/www/html/sdaps/ && php artisan queue:listen 2>&1");
+		return $this->response("success","queue started",$output);
+	}
 
 	public function postQueue()
 	{
@@ -21,14 +27,13 @@ class FormController extends \BaseController {
 
         return $this->response("success","forms added successfully",$data);
     }
-	public function postAddForms()
+
+	public function addForms($uploadedResults)
 	{
-
-		$fileNames = Input::get("fileNames");
-
 		$fileNamesString = '';
-		foreach($fileNames as $fileName)
+		foreach($uploadedResults as $uploadedResult)
 		{
+			$fileName = $uploadedResult['fileName'];
 			$fileNamesString .= ' "'."/var/www/html/uploads/".$fileName.'"';
 		}
 
@@ -36,10 +41,10 @@ class FormController extends \BaseController {
 
 		$output = shell_exec( $command );
 
-		return $this->response("success","forms added successfully",$output);
+		return $output;
 	}
 
-	public function postProcessForms()
+	public function processForms()
 	{
 		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "recognize"';
 
@@ -53,8 +58,8 @@ class FormController extends \BaseController {
 
 		$output3 = shell_exec( $command );
 
-		return $this->response("success","processing done",$output1.$output2.$output3);
-
+		$outputAll = $output1.$output2.$output3;
+		return $outputAll;
 
 	}
 
@@ -91,12 +96,11 @@ class FormController extends \BaseController {
 		return $this->response("success","results retrieval done",$processedResult);
 	}
 
-	public function addFileNamesToConsolidatedResults()
+	public function addFeedbackDataToConsolidatedResults($feedbackData)
 	{
 		$filteredResults = $this->consolidateAllResults();
 
 
-		$i = 0;
 //		for($i = 0; $i < sizeof($filteredResults); $i++)
 //		{
 //			$file = array("fileName" => "das");
@@ -109,34 +113,33 @@ class FormController extends \BaseController {
 		{
 
 			$results[$i]['responses'] = $result;
-			$results[$i]['fileName'] = $i;
-
 			$results[$i]['name'] = "";
 			$results[$i]['surname'] = "";
 			$results[$i]['address'] = "";
 			$results[$i]['meeting_reason'] = "";
 			$results[$i]['mobile'] = "";
 			$results[$i]['email'] = "";
-
 			$i++;
 		}
 		return $results;
 
 	}
 
-	public function postStoreConsolidatedResults()
+	public function storeConsolidatedResults($feedbackData)
 	{
-		$results = $this->addFileNamesToConsolidatedResults();
+		$results = $this->addFeedbackDataToConsolidatedResults($feedbackData);
 
+		$i=0;
 		foreach($results as $result)
 		{
-			$feedback = new Feedback;
+			$feedback = Feedback::find($feedbackData[$i]['feedbackId']);
 			$feedback->form = $result;
 			$feedback->save();
+			$i++;
 		}
 
 		$feedbacks = Feedback::all();
-		return $this->response("success","stored",$feedbacks);
+		return $feedbacks;
 	}
 
 	public function postRetrieveConsolidatedResults()
@@ -200,6 +203,10 @@ class FormController extends \BaseController {
 
 		$fileArray = array();
 
+
+		$feedbackData = array();
+
+		$uploadSuccess = 0;
 
 		$fileCount = count($_FILES['fileToUpload']['name']);
 		$fileKeys = array_keys($_FILES['fileToUpload']);
@@ -272,6 +279,28 @@ class FormController extends \BaseController {
 
 							));
 
+						$uploadSuccess = 1;
+//						$department = Input::get('department');
+						$department = "greatDepartment";
+
+
+						for( $i = 0 ; $i < $totalPages ; $i++ )
+						{
+							$feedback = new Feedback;
+
+							$feedback->department = $department;
+
+							$feedback->filename = basename($file["name"]);
+
+							$feedback->page = ($i + 1);
+							$feedback->save();
+
+							array_push($feedbackData, array('feedbackId' => $feedback['_id'],
+								'department' => $department,
+								'fileName' => basename($file["name"])
+							));
+						}
+
 					} else {
 
 						array_push($uploadMessages, array(
@@ -280,7 +309,7 @@ class FormController extends \BaseController {
 
 						array_push($uploadedResult,
 							array(
-								basename($file["name"]) => "failure",
+								"status" => "failure",
 								"message" => $uploadMessages
 							));
 					}
@@ -289,10 +318,30 @@ class FormController extends \BaseController {
 		}
 
 
+		if($uploadSuccess == 1)
+		{
+			$jobData = array(
+				'feedbackData' => $feedbackData,
+				'uploadedResult' => $uploadedResult
+			);
 
 
-		return $this->response("success", "created", $uploadedResult);
-	}
+
+			Queue::push('FormProcessJob',
+				$jobData
+			);
+			return $this->response("success",$feedbackData, $uploadedResult);
+
+		}
+		else
+		{
+			return $this->response("failed","failed to upload", $uploadedResult);
+		}
+
+
+
+
+		}
 
 	public function postCreateFormRecords()
 	{
@@ -496,13 +545,13 @@ class FormController extends \BaseController {
 
 	public function generateOutput()
 	{
-//		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export"';
+		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "csv export"';
 
-//		$output = shell_exec( $command );
+		$output = shell_exec( $command );
 
 		// Set your CSV feed
-//		$feed = '/var/www/html/pmccs_aundh/data_1.csv';
-		$feed = '/root/PhpstormProjects/SDAPS_web/data_1.csv';
+		$feed = '/var/www/html/pmccs_aundh/data_1.csv';
+//		$feed = '/root/PhpstormProjects/SDAPS_web/data_1.csv';
 
 		/*
 		 * Don't touch this code.

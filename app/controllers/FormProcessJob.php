@@ -9,17 +9,21 @@ class FormProcessJob {
 
     public function fire($job, $data)
     {
-        for( $i = 0; $i < 3; $i++)
+
+        $formController = new FormController;
+        if(is_array($data))
         {
-            $value = $data['message']['key'];
-            Log::info($value.time());
+            $outputAddForms = $formController->addForms($data['uploadedResult']);
+            Log::info($outputAddForms);
 
-            if($i == 2)
-            {
-                $job->delete();
-            }
-
+            $outputProcessForms = $formController->processForms();
+            Log::info($outputProcessForms);
         }
+
+        $results = $formController->storeConsolidatedResults($data['feedbackData']);
+
+        $job->delete();
+
 
     }
 
