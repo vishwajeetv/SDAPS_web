@@ -14,7 +14,6 @@ class User extends Moloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var string
 	 */
-	protected $table = 'users';
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -24,3 +23,6 @@ class User extends Moloquent implements UserInterface, RemindableInterface {
 	protected $hidden = array('password', 'remember_token');
 
 }
+
+//apssss
+//mylife17

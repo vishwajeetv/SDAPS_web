@@ -14,25 +14,32 @@ angular.module('sdapsApp')
       'AngularJS',
       'Karma'
     ];
+        $scope.onFileSelect = function($files) {
 
-        // $scope.$watch('files', function() {
-        //     $scope.upload = $upload.upload({
-        //         url: 'http://localhost:8000/form/add-forms',
-        //         data: {myObj: $scope.myModelObj},
-        //         file: $scope.files
-        //     }).progress(function(evt) {
-        //         console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
-        //     }).success(function(data, status, headers, config) {
-        //         console.log('file ' + config.file.name + 'is uploaded successfully. Response: ' + data);
-        //     });
-        // });
+
+            console.log($files); // undefined
+            //$files: an array of files selected, each file has name, size, and type.
+            for (var i = 0; i < $files.length; i++) {
+                var file = $files[i];
+                $scope.upload = $upload.upload({
+                    url: 'http://localhost:8000/form/upload-form', //upload.php script, node.js route, or servlet url
+                    data: file,
+                    file: file,
+                }).progress(function(evt) {
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(data, status, headers, config) {
+                    // file is uploaded successfully
+                    console.log(data);
+                });
+            }
+        };
+
 
         $scope.departments =  null;
         $timeout(function () {
             $scope.getDepartments();
         }, 1);
 
-        $scope.pdfUrl = 'pdf/ReferenceCard.pdf';
 
         $scope.getDepartments = function()
         {
