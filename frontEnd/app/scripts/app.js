@@ -16,7 +16,8 @@ angular
     'ngSanitize',
     'ngTouch',
       'restangular',
-        'angularFileUpload'
+        'angularFileUpload',
+        'pdf'
   ])
     .config(function(RestangularProvider) {
         RestangularProvider.setBaseUrl('http://localhost:8000');
@@ -26,6 +27,10 @@ angular
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
+        controller: 'MainCtrl'
+      })
+      .when('/form', {
+        templateUrl: 'views/form.html',
         controller: 'MainCtrl'
       })
       .when('/about', {
