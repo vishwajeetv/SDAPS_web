@@ -1,0 +1,63 @@
+body
+{
+	margin: 0;
+	padding: 0;
+	font-size:1.4em; 
+	font-family: sans-serif;
+	/*padding: 10px;*/
+}
+.pdf_section
+{
+	width: 45%;
+	background: #e3e3e3;
+	float: left;
+	margin: 10px;
+}
+.container
+{
+	float: right;
+	width: 50%;
+	margin:10px;
+	padding:20px;
+	border:1px solid #e3e3e3;
+	border-radius: 4px;
+	overflow: hidden;
+	background:#F9F9F9;
+}
+label
+{
+	display: block;
+}
+input[type="text"]
+{
+	width: 60%;
+	border-radius: 3px;
+	border:1px solid #e3e3e3;
+}
+input[type="text"], input[type="radio"]
+{
+	margin-bottom: 20px;
+}
+input[type="radio"]
+{
+	margin-left: 7px;
+	margin-right: 2px;
+	margin-bottom: 26px;
+}
+input[type="radio"]:first-of-type
+{
+	margin-left: 0;
+}
+.col-md-6
+{
+	width: 50%;
+	padding-right: 0;
+	/*background: blue;*/
+}
+.heading 
+{
+	padding: 3px;
+	background: #ACE3AA;
+	font-size: 1.3em;
+	font-weight: bold;
+}
