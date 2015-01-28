@@ -18,13 +18,13 @@
 
 
 
-                        <form action="" name="loginForm" method="POST" class="form-horizontal" role="form" ng-submit="login(loginForm)">
+                        <div class="form-horizontal" role="form">
                             <div class="form-group form-input-element">
                                 <label for="inputUsername" class="col-sm-4 control-label">Username</label>
                                 <div class="col-sm-7">
                                     <i class="fa fa-user"></i>
                                     <input type="text" class="form-control" id="inputUsername" placeholder="Username"
-                                           ng-model="loginForm.username"  required>
+                                           ng-model="username"  required>
                                 </div>
                                 <div class="col-sm-2"></div>
                             </div>
@@ -34,7 +34,7 @@
                                 <div class="col-sm-7">
                                     <i class="fa fa-lock"></i>
                                     <input type="password" class="form-control" id="inputPassword" placeholder="Password"
-                                           ng-model="loginForm.password"
+                                           ng-model="password"
                                          required>
                                 </div>
                                 <div class="col-sm-2"></div>
@@ -43,12 +43,12 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-5 col-sm-3">
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-unlock"></i> Login</button>
+                                    <button ng-click="login()" class="btn btn-success"><i class="fa fa-unlock"></i> Login</button>
                                 </div>
 
                             </div>
 
-                        </form>
+                        </div>
 
 
 

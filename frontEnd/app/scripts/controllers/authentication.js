@@ -12,13 +12,13 @@ angular.module('sdapsApp')
     .controller('AuthenticationCtrl', function ($scope, $location, toastr, Restangular) {
 
 
-        $scope.login = function(loginForm)
+        $scope.login = function()
         {
-            var loginUser = Restangular.all('http://localhost:8000/user/login');
+            var loginUser = Restangular.all('user/sign-in');
             var userData = {
 
-                email : loginForm.username,
-                password : loginForm.password
+                email : $scope.username,
+                password : $scope.password
 
             };
             loginUser.post(userData).then(function (response) {

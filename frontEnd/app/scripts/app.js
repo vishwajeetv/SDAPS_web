@@ -23,8 +23,7 @@ angular
     .config(function(RestangularProvider) {
         RestangularProvider.setBaseUrl('http://localhost:8000');
         RestangularProvider.setDefaultHeaders({ "Content-Type": "application/json" });
-    }).
-$httpProvider.defaults.headers.post
+    })
     .config(function(toastrConfig) {
       angular.extend(toastrConfig, {
         allowHtml: true,

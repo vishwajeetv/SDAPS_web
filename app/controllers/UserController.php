@@ -26,7 +26,7 @@ class UserController extends \BaseController {
 		return $this->response("success","user created",$user);
 	}
 
-	public function postLogin()
+	public function postSignIn()
 	{
 		$rules = array(
 			'email'    => 'required|email',
