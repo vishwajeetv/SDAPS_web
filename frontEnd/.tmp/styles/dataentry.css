@@ -2,7 +2,7 @@ body
 {
 	margin: 0;
 	padding: 0;
-	font-size:1.4em; 
+	font-size:1.4em;
 	font-family: sans-serif;
 	/*padding: 10px;*/
 }
@@ -54,7 +54,7 @@ input[type="radio"]:first-of-type
 	padding-right: 0;
 	/*background: blue;*/
 }
-.heading 
+.heading
 {
 	padding: 3px;
 	background: #ACE3AA;

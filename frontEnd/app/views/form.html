@@ -1,31 +1,38 @@
 <link rel="stylesheet" type="text/css" href="../styles/dataentry.css">
 
+<div class="pdf_section">
+<ng-pdf template-url="views/pdfview.html"></ng-pdf>
+</div>
 
 
 <form action="" method="post">
 	<div class="container">
-		<h3 class="heading">1 Personal Information </h3>
 
-			<label for="name">1.1 Name</label>
-			<input type="text" id="name" name="name">
 
-			<label>1.2 Gender</label>
-			<input type="radio" name="gender">Female
-			<input type="radio" name="gender">Male	
-			<input type="radio" name="gender">Other	
+				<h3 class="heading">1 Personal Information </h3>
 
-			<label for="address">1.3 Address</label>
-			<input type="text" id="address" name="address">
+				<label for="name">1.1 Name</label>
+				<input ng-model="citizenName" type="text" id="name" name="name">
 
-			<label for="reason">1.4 Reason for meet</label>
-			<input type="text" name="reason" id="reason">
+				<label>1.2 Gender</label>
+				<input ng-model="citizenGender" type="radio" name="gender">Female
+				<input type="citizenGender" name="gender">Male
+				<input type="citizenGender" name="gender">Other
 
-			<label for="mobno">1.5 Mobile No.</label>
-			<input type="text" id="mobno" name="mobno">
-		
-			<label for="email">1.6 Email</label>
-			<input type="text" name="email" id="email">
-		
-		<div style="clear:both"></div>
-	</div>
+				<label for="address">1.3 Address</label>
+				<input ng-model="citizenAddress" type="text" id="address" name="address">
+
+				<label for="reason">1.4 Reason for meet</label>
+				<input ng-model="citizenReason" type="text" name="reason" id="reason">
+
+				<label for="mobno">1.5 Mobile No.</label>
+				<input ng-model="citizenMobile" type="text" id="mobno" name="mobno">
+
+				<label for="email">1.6 Email</label>
+				<input ng-model="citizenEmail" type="text" name="email" id="email">
+
+				<button class="btn btn-lg btn-primary" ng-click="storeCitizenInfo()"></button>
+				<div style="clear:both"></div>
+			</div>
+
 </form>		
