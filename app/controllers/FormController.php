@@ -94,7 +94,7 @@ class FormController extends \BaseController {
 
 		$reports = $this->generateReports($filteredResult);
 
-		return $this->response("success","results retrieval done",$processedResult);
+		return $this->response("success","results retrieval done",$reports);
 	}
 
 	public function addFeedbackDataToConsolidatedResults($feedbackData)

@@ -74,7 +74,7 @@
             NProgress.done();
 
             var report = response.body;
-            var totalReportGradeCount = report.total.gradeCount;
+            // var totalReportGradeCount = report.total.gradeCount;
             var totalCount = report.total.count;
 
             function generateFrequencyChart(totalReportGradeCount, totalCount,selector, title) {

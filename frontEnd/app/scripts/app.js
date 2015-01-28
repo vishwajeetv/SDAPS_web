@@ -60,6 +60,10 @@ angular
         templateUrl: 'views/form.html',
         controller: 'MainCtrl'
       })
+      .when('/reports', {
+        templateUrl: 'views/reports.html',
+        controller: 'MainCtrl'
+      })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'

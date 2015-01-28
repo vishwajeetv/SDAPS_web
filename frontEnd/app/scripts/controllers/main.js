@@ -14,6 +14,136 @@ angular.module('sdapsApp')
       'AngularJS',
       'Karma'
     ];
+
+    $scope.generateCharts = function()
+        {
+            var getReportsMethod = Restangular.all('index.php/form/generate-reports-from-db');
+
+            getReportsMethod.post().then(function (response) {
+
+                console.log(response.body);
+
+                $scope.chartConfig = {
+                    var report = response.body;
+                    var totalReportGradeCount = report.total.gradeCount;
+                    var totalCount = report.total.count;
+
+                    options: 
+                    {
+                        chart: 
+                        {
+                            type: 'line',
+                        }
+                    },
+                    title: {
+                        text: title
+                    },
+                    xAxis: {
+                        categories: ['1-3 times', '3-6 times', 'more than 6 times']
+                    },
+                    yAxis: {
+                        labels: {
+                            formatter:function() {
+                                var pcnt = (this.value / totalCount) * 100;
+                                return Highcharts.numberFormat(pcnt,0,',') + '%';
+                            }
+                        }
+                    },
+                    tooltip: {
+                        formatter: function () {
+                            var pcnt = (this.y / totalCount) * 100;
+                            return Highcharts.numberFormat(pcnt) + '%';
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                            shadow: false,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function () {
+                                    var pcnt = (this.y / totalCount) * 100;
+                                    return Highcharts.numberFormat(pcnt) + '%';
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'bar',
+                        colorByPoint: true,
+                        data: [
+
+                            ['times_1_3', totalReportGradeCount.times_1_3],
+                            ['3-6_times', totalReportGradeCount.times_3_6],
+                            ['6_more_times', totalReportGradeCount.times_6_more]
+                        ]
+                    }]
+                } 
+                
+
+            });
+        };
+
+                // $scope.chartConfig = {
+                //     var report = response.body;
+                //     var totalReportGradeCount = report.total.gradeCount;
+                //     var totalCount = report.total.count;
+
+                //     options: 
+                //     {
+                //         chart: 
+                //         {
+                //             type: 'line',
+                //         }
+                //     },
+                //     title: {
+                //         text: title
+                //     },
+                //     xAxis: {
+                //         categories: ['1-3 times', '3-6 times', 'more than 6 times']
+                //     },
+                //     yAxis: {
+                //         labels: {
+                //             formatter:function() {
+                //                 var pcnt = (this.value / totalCount) * 100;
+                //                 return Highcharts.numberFormat(pcnt,0,',') + '%';
+                //             }
+                //         }
+                //     },
+                //     tooltip: {
+                //         formatter: function () {
+                //             var pcnt = (this.y / totalCount) * 100;
+                //             return Highcharts.numberFormat(pcnt) + '%';
+                //         }
+                //     },
+                //     plotOptions: {
+                //         series: {
+                //             shadow: false,
+                //             borderWidth: 0,
+                //             dataLabels: {
+                //                 enabled: true,
+                //                 formatter: function () {
+                //                     var pcnt = (this.y / totalCount) * 100;
+                //                     return Highcharts.numberFormat(pcnt) + '%';
+                //                 }
+                //             }
+                //         }
+                //     },
+                //     series: [{
+                //         type: 'bar',
+                //         colorByPoint: true,
+                //         data: [
+
+                //             ['times_1_3', totalReportGradeCount.times_1_3],
+                //             ['3-6_times', totalReportGradeCount.times_3_6],
+                //             ['6_more_times', totalReportGradeCount.times_6_more]
+                //         ]
+                //     }]
+                // });   
+                
+          
+
+
         $scope.onFileSelect = function($files) {
 
             if (!sessionStorage.authenticated)
