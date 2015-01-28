@@ -158,7 +158,7 @@ class FormController extends \BaseController {
 		foreach($feedbacks as $feedback)
 		{
 
-			$responses = $feedback['response']['responses'];
+			$responses = $feedback['form']['responses'];
 
 			if (is_array($responses))
 			{

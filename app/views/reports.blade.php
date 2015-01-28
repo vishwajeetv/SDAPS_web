@@ -17,7 +17,7 @@
 
 
             <div>
-                <form action="index.php/form/retrieve-reports" id="processFilesForm" class="pull-left" method="post">
+                <form action="index.php/form/generate-reports-from-db" id="processFilesForm" class="pull-left" method="post">
 
                     <input type="submit" id="retrieveReportsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" name="submit">
                 </form>
