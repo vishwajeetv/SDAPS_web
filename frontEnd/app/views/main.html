@@ -11,38 +11,14 @@
 					{{department.dept_name}}
 				</option>
 			</select>
-			<label class="browselbl">Choose folder</label>
-			<!--<form action="http://192.168.2.232/sdaps/public/form/upload-form" id="fileUploadForm" method="post"-->
-				  <!--enctype="multipart/form-data">-->
-				<!--Select file to upload:-->
-				<!--&lt;!&ndash;            <input type="file" name="fileToUpload" id="fileToUpload">&ndash;&gt;-->
-				<!--<input type="file" class="btn" id="chooseFilesButton" multiple="multiple"-->
-					   <!--name="fileToUpload[]"/>-->
-				<!--<input type="submit" class="btn btn-raised btn-material-bluegrey" id="uploadButton"-->
-					   <!--value="Upload File" name="submit">-->
-			<!--</form>-->
-			Select File: <div class="button" ng-file-select ng-model="files">Select File</div>
+			<label class="browselbl">Choose File</label>
 
-			<!--Drop File: <div ng-file-drop ng-model="files" class="drop-box"-->
-							<!--drag-over-class="dragover" multiple="true"-->
-							<!--allow-dir="true" accept="image/*,application/pdf">-->
-			<!--Drop Images or PDFs files here-->
+			<input type="file" title="" accept="*" multiple="true" class="uploadbtn" ng-file-select="onFileSelect($files)" />
 
 		</div>
-			<div ng-no-file-drop>File Farg/Drop is not supported for this browser</div>
 
-
-			<!--<input type="text" name="browse" id="browse">-->
-			<!--<input type="button" value="...">-->
-
-			<button class="uploadbtn" ng-click="upload()">
-				<img src="images/upload_icon.png" alt="" class="upload_icon">Upload</button>
-			<button class="cancelbtn">Cancel</button>
-			<!--<button class="processbtn">Process Files</button>-->
 		</div>
 	</div>
 </div>
 
 
-
-<input type="file" title="" accept="*" multiple="true"  ng-file-select="onFileSelect($files)" class="upload" />

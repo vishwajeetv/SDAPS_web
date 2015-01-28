@@ -5,9 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class Department extends Moloquent implements UserInterface, RemindableInterface {
-
-    use UserTrait, RemindableTrait;
+class Department extends Moloquent {
 
     /**
      * The database table used by the model.

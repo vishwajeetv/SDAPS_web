@@ -21,7 +21,7 @@ angular
       'toastr'
   ])
     .config(function(RestangularProvider) {
-        RestangularProvider.setBaseUrl('http://localhost:8000');
+        RestangularProvider.setBaseUrl('http://192.168.2.232/sdaps/public');
         RestangularProvider.setDefaultHeaders({ "Content-Type": "application/json" });
     })
     .config(function(toastrConfig) {

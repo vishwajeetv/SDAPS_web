@@ -16,13 +16,17 @@ angular.module('sdapsApp')
     ];
         $scope.onFileSelect = function($files) {
 
+            if (!sessionStorage.authenticated)
+            {
+                $location.path('/');
+            }
 
             console.log($files); // undefined
             //$files: an array of files selected, each file has name, size, and type.
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 $scope.upload = $upload.upload({
-                    url: 'http://localhost:8000/form/upload-form', //upload.php script, node.js route, or servlet url
+                    url: 'http://192.168.2.232/sdaps/public/form/upload-form', //upload.php script, node.js route, or servlet url
                     data: file,
                     file: file,
                 }).progress(function(evt) {

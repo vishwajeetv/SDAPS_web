@@ -1,5 +1,4 @@
 <?php
-use SoapBox\Formatter\Formatter;
 
 class FormController extends \BaseController {
 
@@ -23,7 +22,9 @@ class FormController extends \BaseController {
 //        $data = DB::collection('dept')->get();
 ////        return View::make('show');
 //        return View::make('form.show')->with('data', $data);
-        $data = Department::all();
+
+
+		$departments = Department::all();
 
         return $this->response("success","forms added successfully",$data);
     }
@@ -208,7 +209,7 @@ class FormController extends \BaseController {
 
 		$uploadedResult = array();
 
-
+		Log::info($file);
 		$targetFile = $targetDir . basename($file['name']);
 
 		$uploadOk = 1;
@@ -216,79 +217,32 @@ class FormController extends \BaseController {
 
 		$uploadMessages = array();
 
-		if (isset($_POST["submit"])) {
+		if (move_uploaded_file($file["tmp_name"], $targetFile))
+		{
 
-			if (file_exists($targetFile)) {
-				array_push($uploadMessages, array(
-					"errorExist" => "This file already exists."
+			array_push($uploadMessages,
+				array(
+					"successUpload" => "The file has been successfully uploaded"
 				));
 
-			}
-			if ($file["size"] > 1000000000) {
+			$fileName = $targetFile;
 
-				array_push($uploadMessages, array(
-					"errorFileLarge" => "Sorry, this file is too large"
-				));
-			}
+			$totalPages = $this->getPDFPages($fileName);
 
-			if ($fileType != "pdf") {
-				array_push($uploadMessages, array(
-					"errorFileType" =>  "Sorry, only pdf files are allowed."
-				));
-			}
-
-
-			if (count($uploadMessages) > 0) {
-				array_push($uploadedResult,
-					array(
-						"fileName" => basename($file["name"]),
-						"uploadStatus" => "failure",
-						"message" => $uploadMessages
+			array_push($uploadedResult,
+				array(
+					"fileName" => basename($file["name"]),
+					"uploadStatus" => "success",
+					"message" => $uploadMessages,
+					"totalPages" => $totalPages
 					));
-
-			} else {
-				if (move_uploaded_file($file["tmp_name"], $targetFile)) {
-
-					array_push($uploadMessages, array(
-						"successUpload" => "The file has been successfully uploaded"
-					));
-
-					$fileName = $targetFile;
-
-					$totalPages = $this->getPDFPages($fileName);
-
-					array_push($uploadedResult,
-						array(
-							"fileName" => basename($file["name"]),
-							"uploadStatus" => "success",
-							"message" => $uploadMessages,
-							"totalPages" => $totalPages
-
-						));
-
-					$uploadSuccess = 1;
+			$uploadSuccess = 1;
 //						$department = Input::get('department');
-					$department = "greatDepartment";
 
+			$department = "greatDepartment";
 
-					$feedbackData = $this->createFeedbackRecord($totalPages, $department, $file);
+			$feedbackData = $this->createFeedbackRecord($totalPages, $department, $file);
 
-				} else {
-
-					array_push($uploadMessages, array(
-						"successUpload" => "Failed to upload the file"
-					));
-
-					array_push($uploadedResult,
-						array(
-							"status" => "failure",
-							"message" => $uploadMessages
-						));
-				}
-			}
-		}
-
-		if ($uploadSuccess == 1) {
 			$jobData = array(
 				'feedbackData' => $feedbackData,
 				'uploadedResult' => $uploadedResult
@@ -297,11 +251,98 @@ class FormController extends \BaseController {
 			Queue::push('FormProcessJob',
 				$jobData
 			);
-			return $this->response("success", $feedbackData, $uploadedResult);
-
-		} else {
-			return $this->response("failed", "failed to upload", $uploadedResult);
+			return $this->response("success","uploaded",$feedbackData);
 		}
+		else
+		{
+			return $this->response("failed","not uploaded","bad");
+		}
+//		if (isset($_POST["submit"])) {
+//
+//			if (file_exists($targetFile)) {
+//				array_push($uploadMessages, array(
+//					"errorExist" => "This file already exists."
+//				));
+//
+//			}
+//			if ($file["size"] > 1000000000) {
+//
+//				array_push($uploadMessages, array(
+//					"errorFileLarge" => "Sorry, this file is too large"
+//				));
+//			}
+//
+//			if ($fileType != "pdf") {
+//				array_push($uploadMessages, array(
+//					"errorFileType" =>  "Sorry, only pdf files are allowed."
+//				));
+//			}
+//
+//
+//			if (count($uploadMessages) > 0) {
+//				array_push($uploadedResult,
+//					array(
+//						"fileName" => basename($file["name"]),
+//						"uploadStatus" => "failure",
+//						"message" => $uploadMessages
+//					));
+//
+//			} else {
+//				if (move_uploaded_file($file["tmp_name"], $targetFile)) {
+//
+//					array_push($uploadMessages, array(
+//						"successUpload" => "The file has been successfully uploaded"
+//					));
+//
+//					$fileName = $targetFile;
+//
+//					$totalPages = $this->getPDFPages($fileName);
+//
+//					array_push($uploadedResult,
+//						array(
+//							"fileName" => basename($file["name"]),
+//							"uploadStatus" => "success",
+//							"message" => $uploadMessages,
+//							"totalPages" => $totalPages
+//
+//						));
+//
+//					$uploadSuccess = 1;
+////						$department = Input::get('department');
+//					$department = "greatDepartment";
+//
+//
+//					$feedbackData = $this->createFeedbackRecord($totalPages, $department, $file);
+//
+//				} else {
+//
+//					array_push($uploadMessages, array(
+//						"successUpload" => "Failed to upload the file"
+//					));
+//
+//					array_push($uploadedResult,
+//						array(
+//							"status" => "failure",
+//							"message" => $uploadMessages
+//						));
+//				}
+//			}
+//		}
+//
+//		if ($uploadSuccess == 1) {
+//			$jobData = array(
+//				'feedbackData' => $feedbackData,
+//				'uploadedResult' => $uploadedResult
+//			);
+//
+//			Queue::push('FormProcessJob',
+//				$jobData
+//			);
+//			return $this->response("success", $feedbackData, $uploadedResult);
+//
+//		} else {
+//			return $this->response("failed", "failed to upload", $uploadedResult);
+//		}
 
 	}
 
@@ -881,9 +922,11 @@ class FormController extends \BaseController {
 	 */
 	public function createFeedbackRecord($totalPages, $department, $file)
 	{
+		$feedbackData = array();
 		for ($i = 0; $i < $totalPages; $i++) {
 			$feedback = new Feedback;
 
+			$department = "greatDepartment";
 			$feedback->department = $department;
 
 			$feedback->filename = basename($file["name"]);
@@ -891,7 +934,8 @@ class FormController extends \BaseController {
 			$feedback->page = ($i + 1);
 			$feedback->save();
 
-			array_push($feedbackData, array('feedbackId' => $feedback['_id'],
+			array_push($feedbackData, array(
+				'feedbackId' => $feedback['_id'],
 				'department' => $department,
 				'fileName' => basename($file["name"])
 			));
