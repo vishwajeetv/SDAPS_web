@@ -9,6 +9,7 @@ class FormController extends \BaseController {
 		return $this->response("success","queue started",$output);
 	}
 
+
 	public function postQueue()
 	{
 		$message = array('key' => 'value');
@@ -135,7 +136,7 @@ class FormController extends \BaseController {
 		for($i=0; $i<sizeof($feedbackRecords); $i++)
 		{
 			$feedback = Feedback::find($feedbackRecords[$i]['feedbackId']);
-			$feedback->form = $result[$i];
+			$feedback->form = $results[$i];
 			$feedback->save();
 			$i++;
 		}
