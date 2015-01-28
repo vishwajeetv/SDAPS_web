@@ -18,7 +18,8 @@ angular
       'restangular',
         'angularFileUpload',
         'pdf',
-      'toastr'
+      'toastr',
+        'highcharts-ng'
   ])
     .config(function(RestangularProvider) {
         RestangularProvider.setBaseUrl('http://192.168.2.232/sdaps/public');
