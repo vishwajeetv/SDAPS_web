@@ -12,6 +12,7 @@
 */
 
 Route::controller( 'form', 'FormController');
+Route::controller( 'user', 'UserController');
 //Route::get('/show', 'FormController@show');
 
 

@@ -1,0 +1,16 @@
+<link rel="stylesheet" type="text/css" href="../styles/style.css"> <div class="container"> <div class="header"> <center> Citizen Feedback System</center> </div> <div class="main"> <div class="content"> <label>Select Department</label> <select id="dept_list"> <option ng-repeat="department in departments" value="{{department.dept_name}}"> {{department.dept_name}}  </select> <label class="browselbl">Choose folder</label> <!--<form action="http://192.168.2.232/sdaps/public/form/upload-form" id="fileUploadForm" method="post"--> <!--enctype="multipart/form-data">--> <!--Select file to upload:--> <!--&lt;!&ndash;            <input type="file" name="fileToUpload" id="fileToUpload">&ndash;&gt;--> <!--<input type="file" class="btn" id="chooseFilesButton" multiple="multiple"--> <!--name="fileToUpload[]"/>--> <!--<input type="submit" class="btn btn-raised btn-material-bluegrey" id="uploadButton"--> <!--value="Upload File" name="submit">--> <!--</form>--> Select File: <div class="button" ng-file-select ng-model="files">Select File</div> Drop File: <div ng-file-drop ng-model="files" class="drop-box" drag-over-class="dragover" multiple allow-dir="true" accept="image/*,application/pdf"> Drop Images or PDFs files here </div> <div ng-no-file-drop>File Farg/Drop is not supported for this browser</div> <!--<input type="text" name="browse" id="browse">--> <!--<input type="button" value="...">--> <!--<button class="uploadbtn">--> <!--<img src="images/upload_icon.png" alt="" class="upload_icon">Upload</button>--> <!--<button class="cancelbtn">Cancel</button>--> <!--<button class="processbtn">Process Files</button>--> </div> </div> </div> <!--Select File: <div class="button" ng-file-select ng-model="files">Select File</div>--> <!--Drop File: <div ng-file-drop ng-model="files" class="drop-box"--> <!--drag-over-class="dragover" multiple="true"--> <!--allow-dir="true" accept="image/*,application/pdf">--> <!--Drop Images or PDFs files here--> <!--</div>--> <!--<div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>--> <script>//	$("#fileUploadForm").ajaxForm({
+//		beforeSubmit: function()
+//		{
+////			NProgress.start();
+//		},
+//		url: "http://192.168.2.232/sdaps/public/form/upload-form", type: 'post',
+//		success: function (response) {
+//			response.body.forEach(function (result) {
+//				console.log(result);
+////				NProgress.done();
+////				$.snackbar({content: response.header.message});
+//
+//			});
+//
+//		}
+//	});</script>

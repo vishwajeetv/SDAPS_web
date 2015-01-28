@@ -77,3 +77,53 @@ body {
     border-bottom: 0;
   }
 }
+
+.form-input-element {
+  position: relative;
+}
+.form-input-element input {
+  padding-left: 30px;
+}
+.form-input-element i {
+  position: absolute;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+
+.form-input-element textarea {
+  padding-left: 30px;
+}
+
+.user-info-top
+{
+  margin-top: 30px;
+}
+.submenu-content
+{
+  margin-top: -90px;
+}
+
+.typeahead-input i {
+
+  padding: 15px 12px;
+  pointer-events: none;
+}
+
+tab-heading
+{
+  font-size: larger;
+}
+.profile-pic
+{
+  margin-right: 10px;
+  margin-top: -10px;
+}
+.menu
+{
+  margin-top: 40px;
+}
+
+.input-sm{
+  border: 1px solid #CCC;
+  border-radius: 4px;
+}

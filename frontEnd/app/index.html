@@ -8,7 +8,9 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -35,6 +37,7 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -44,13 +47,13 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/lodash/dist/lodash.compat.js"></script>
     <script src="bower_components/restangular/dist/restangular.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script src="bower_components/hammerjs/hammer.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
     <script src="bower_components/pdfjs-dist/build/pdf.js"></script>
     <script src="bower_components/pdfjs-dist/build/pdf.worker.js"></script>
     <script src="bower_components/angular-pdf/dist/angular-pdf.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-toastr/dist/angular-toastr.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -58,27 +61,8 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/authentication.js"></script>
         <!-- endbuild -->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
 
-    <!--<script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>-->
-<!--<script>-->
-    <!--$("#fileUploadForm").ajaxForm({-->
-    <!--beforeSubmit: function()-->
-    <!--{-->
-    <!--//			NProgress.start();-->
-    <!--},-->
-    <!--url: "http://192.168.2.232/sdaps/public/form/upload-form", type: 'post',-->
-    <!--success: function (response) {-->
-    <!--response.body.forEach(function (result) {-->
-    <!--console.log(result);-->
-    <!--//				NProgress.done();-->
-    <!--//				$.snackbar({content: response.header.message});-->
-
-    <!--});-->
-
-    <!--}-->
-    <!--});-->
-<!--</script>-->
   </body>
 </html>

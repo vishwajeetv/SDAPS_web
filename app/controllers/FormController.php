@@ -198,7 +198,7 @@ class FormController extends \BaseController {
 	public function postUploadForm()
 	{
 
-		$targetDir = "uploads/";
+		$targetDir = "../../uploads/";
 
 		$feedbackData = array();
 
