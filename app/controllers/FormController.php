@@ -26,7 +26,7 @@ class FormController extends \BaseController {
 
 		$departments = Department::all();
 
-        return $this->response("success","forms added successfully",$data);
+        return $this->response("success","forms added successfully",$departments);
     }
 
 	public function addForms($uploadedResults)
@@ -126,15 +126,16 @@ class FormController extends \BaseController {
 
 	}
 
-	public function storeConsolidatedResults($feedbackData)
+	public function storeConsolidatedResults($feedbackRecords)
 	{
-		$results = $this->addFeedbackDataToConsolidatedResults($feedbackData);
+		$results = $this->addFeedbackDataToConsolidatedResults($feedbackRecords);
 
+		Log::info($feedbackRecords);
 		$i=0;
-		foreach($results as $result)
+		for($i=0; $i<sizeof($feedbackRecords); $i++)
 		{
-			$feedback = Feedback::find($feedbackData[$i]['feedbackId']);
-			$feedback->form = $result;
+			$feedback = Feedback::find($feedbackRecords[$i]['feedbackId']);
+			$feedback->form = $result[$i];
 			$feedback->save();
 			$i++;
 		}
@@ -243,11 +244,12 @@ class FormController extends \BaseController {
 
 			$feedbackData = $this->createFeedbackRecord($totalPages, $department, $file);
 
+
 			$jobData = array(
 				'feedbackData' => $feedbackData,
 				'uploadedResult' => $uploadedResult
 			);
-
+			Log::info($jobData);
 			Queue::push('FormProcessJob',
 				$jobData
 			);
