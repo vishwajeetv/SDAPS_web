@@ -19,10 +19,11 @@ angular
         'angularFileUpload',
         'pdf',
       'toastr',
-        'highcharts-ng'
+        'highcharts-ng',
+        'ui.bootstrap'
   ])
     .config(function(RestangularProvider) {
-        RestangularProvider.setBaseUrl('http://192.168.2.232/sdaps/public');
+        RestangularProvider.setBaseUrl('http://localhost:8000');
         RestangularProvider.setDefaultHeaders({ "Content-Type": "application/json" });
     })
     .config(function(toastrConfig) {
@@ -59,7 +60,7 @@ angular
       })
       .when('/form', {
         templateUrl: 'views/form.html',
-        controller: 'MainCtrl'
+        controller: 'DataentryCtrl'
       })
       .when('/reports', {
         templateUrl: 'views/reports.html',

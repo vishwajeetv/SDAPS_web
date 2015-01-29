@@ -14,38 +14,6 @@ angular.module('sdapsApp')
       'AngularJS',
       'Karma'
     ];
-
-        $timeout(function () {
-            $scope.getDepartments();
-            $scope.retrieveForms();
-        }, 1);
-
-        $scope.storeCitizenInfo = function()
-        {
-            var saveCitizenInfoMethod = Restangular.all('form/show');
-
-            saveCitizenInfoMethod.post().then(function (response) {
-
-                console.log(response.body);
-                $scope.departments = response.body;
-            });
-        };
-
-
-        $scope.retrieveForms = function()
-        {
-            var retrieveFormsMethod = Restangular.all('form/retrieve-consolidated-results');
-
-            retrieveFormsMethod.post().then(function (response) {
-
-                console.log(response.body);
-                $scope.forms = response.body;
-            });
-        };
-
-
-        $scope.pdfUrl = '/images/survey.pdf';
-
         $scope.onFileSelect = function($files) {
 
             if (!sessionStorage.authenticated)

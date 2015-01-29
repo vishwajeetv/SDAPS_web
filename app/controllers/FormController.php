@@ -32,6 +32,10 @@ class FormController extends \BaseController {
 
 	public function addForms($uploadedResults)
 	{
+		$command = '/var/www/html/sdaps/scripts/recyclesdap.sh ';
+
+		$output1 = shell_exec( $command );
+
 		$fileNamesString = '';
 		foreach($uploadedResults as $uploadedResult)
 		{
@@ -41,9 +45,9 @@ class FormController extends \BaseController {
 
 		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "add" -A "convert" -f '.$fileNamesString;
 
-		$output = shell_exec( $command );
+		$output2 = shell_exec( $command );
 
-		return $output;
+		return $output1.$output2;
 	}
 
 	public function processForms()
@@ -115,12 +119,7 @@ class FormController extends \BaseController {
 		{
 
 			$results[$i]['responses'] = $result;
-			$results[$i]['name'] = "";
-			$results[$i]['surname'] = "";
-			$results[$i]['address'] = "";
-			$results[$i]['meeting_reason'] = "";
-			$results[$i]['mobile'] = "";
-			$results[$i]['email'] = "";
+
 			$i++;
 		}
 		return $results;
@@ -150,6 +149,26 @@ class FormController extends \BaseController {
 		$feedbacks = Feedback::all();
 
 		return $this->response("success","consolidated results retrieved",$feedbacks);
+	}
+
+	public function postRetrieveUnfilledForms()
+	{
+		$feedbacks = Feedback::all();
+
+		$unfilledForms= array();
+		foreach($feedbacks as $feedback)
+		{
+			if($feedback['name'] != '')
+			{
+				continue;
+			}
+			else
+			{
+				array_push($unfilledForms, $feedback);
+			}
+		}
+
+		return $this->response("success","consolidated results retrieved",$unfilledForms);
 	}
 
 
@@ -946,4 +965,39 @@ class FormController extends \BaseController {
 		return $feedbackData;
 	}
 
+	public function postStoreCitizenInfo()
+	{
+		$feedback = Feedback::find(Input::get('feedbackId'));
+
+		$form = array();
+
+		$feedback->name = Input::get('name');
+		$feedback->address = Input::get('address');
+		$feedback->email = Input::get('email');
+		$feedback->mobile = Input::get('mobile');
+		$feedback->meeting_reason = Input::get('meeting_reason');
+
+		$feedback->save();
+		return $this->response("success","successfully saved",$feedback);
+	}
+
+	public function postUpdateTmp()
+	{
+		$feedbacks = Feedback::all();
+
+		foreach($feedbacks as $feedback)
+		{
+			$feedback= Feedback::find($feedback['_id']);
+			$feedback->filename = basename('survey.pdf');
+
+			$department = "greatDepartment";
+			$feedback->department = $department;
+
+			$feedback->page = 2;
+
+			$feedback->save();
+		}
+		$feedbacks = Feedback::all();
+		return $this->response("success","updated",$feedbacks);
+	}
 }
