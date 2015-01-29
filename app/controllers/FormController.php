@@ -127,7 +127,7 @@ class FormController extends \BaseController {
 	public function storeConsolidatedResults($feedbackRecords)
 	{
 		$results = $this->addFeedbackDataToConsolidatedResults($feedbackRecords);
-
+		Log::info("store consilidated results, after add feedbackback data started");
 		Log::info($feedbackRecords);
 		$i=0;
 		for($i=0; $i<sizeof($feedbackRecords); $i++)
@@ -239,6 +239,7 @@ class FormController extends \BaseController {
 			'files' => $filesData
 		);
 
+		Log::info("jobdata started");
 		Log::info($jobData);
 		Queue::push('FormProcessJob',
 			$jobData
@@ -258,6 +259,7 @@ class FormController extends \BaseController {
 
 		$uploadedResult = array();
 
+		Log::info("upload form - file started");
 		Log::info($file);
 		$targetFile = $targetDir . basename($file['name']);
 

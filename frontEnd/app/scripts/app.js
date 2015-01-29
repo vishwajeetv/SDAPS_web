@@ -9,6 +9,7 @@
  */
 angular
   .module('sdapsApp', [
+        'angular-loading-bar',
     'ngAnimate',
     'ngCookies',
     'ngResource',

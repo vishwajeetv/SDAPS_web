@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -25,9 +26,17 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
+    <div class="row">
+      <div class="col-md-1">
 
-      <div ng-view=""></div>
+      </div>
+      <div class="col-md-10">
+        <div ng-view=""></div>
+      </div>
+    <div class="col-md-1">
 
+    </div>
+</div>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
@@ -60,6 +69,7 @@
     <script src="bower_components/pdfjs-dist/build/pdf.worker.js"></script>
     <script src="bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js"></script>
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

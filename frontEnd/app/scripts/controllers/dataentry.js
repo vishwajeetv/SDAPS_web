@@ -61,6 +61,9 @@ angular.module('sdapsApp')
 
                 $scope.fileName = $scope.forms[formIndex].filename;
                 $scope.feedbackId = $scope.forms[formIndex]._id;
+                pdfDelegate.$getByHandle('my-pdf-container').goToPage(response.body[0].page);
+            }, function () {
+                toastr.error('Sorry, something went wrong', 'Error');
             });
         };
 
@@ -79,7 +82,10 @@ angular.module('sdapsApp')
             };
 
             storeCitizenInfoMethod.post(citizenInfo).then(function (response) {
+                toastr.success(response.header.message, 'Success');
                 console.log(response.body);
+            }, function () {
+                toastr.error('Sorry, something went wrong', 'Error');
             });
 
 

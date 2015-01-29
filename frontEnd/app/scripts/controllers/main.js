@@ -8,7 +8,7 @@
  * Controller of the sdapsApp
  */
 angular.module('sdapsApp')
-  .controller('MainCtrl', function ($scope, $timeout, Restangular, $upload, $sce) {
+  .controller('MainCtrl', function ($scope, $timeout, Restangular, $upload, $sce, $location) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -63,7 +63,10 @@ angular.module('sdapsApp')
 
             processFormsMethod.post(processFormsData).then(function (response) {
 
+                toastr.success(response.header.message, 'Success');
                 console.log(response.body);
+            }, function () {
+                toastr.error('Sorry, something went wrong', 'Error');
             });
         };
         $scope.onFileSelect = function($files) {
@@ -84,6 +87,13 @@ angular.module('sdapsApp')
 
                     $scope.uploadedFiles = data.body;
                     console.log($scope.uploadedFiles);
+                    toastr.success(data.header.message, 'Success');
+                }).error(function(data, status, headers, config) {
+                    // file is uploaded successfully
+
+                    $scope.uploadedFiles = data.body;
+                    console.log($scope.uploadedFiles);
+                    toastr.error("Something went wrong", 'error');
                 });
             }
         };
@@ -98,6 +108,7 @@ angular.module('sdapsApp')
 
             getReportsMethod.post().then(function (response) {
 
+                toastr.success(response.header.message, 'Success');
                 console.log(response.body);
                 var report = response.body;
                 var totalReportGradeCount = report.total.gradeCount;
@@ -157,6 +168,8 @@ angular.module('sdapsApp')
                         ]
                     }]
                 }
+            }, function () {
+                toastr.error('Sorry, something went wrong', 'Error');
             });
         };
 
@@ -168,6 +181,8 @@ angular.module('sdapsApp')
 
                 console.log(response.body);
                 $scope.departments = response.body;
+            }, function () {
+                toastr.error('Sorry, can not retrieve departments, something went wrong', 'Error');
             });
         };
 
