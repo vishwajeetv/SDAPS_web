@@ -13,6 +13,8 @@ class FormProcessJob {
         $formController = new FormController;
         if(is_array($data))
         {
+            Log::info("data started in formProcessJob");
+            Log::info($data);
             $outputAddForms = $formController->addForms($data['files']);
             Log::info("add forms output started");
             Log::info($outputAddForms);

@@ -1,3 +1,36 @@
-	<input id="retrieveReportsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" ng-click="generateCharts()">
+
+<!--<table tr-ng-grid="" items="reportsTable">-->
+<!--</table>-->
+
+
+<select ng-model="department">
+    <option ng-repeat="department in departments" value="{{department.name}}">
+        {{department.name}}
+    </option>
+</select>
+
+<input id="generateChartsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" ng-click="getReports()">
+
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+
+        <th>Criteria</th>
+        <th>Total Feedbacks</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <tr ng-repeat="(key, value) in reports">
+        <td>{{key}}</td><td>{{value.count}}</td>
+    </tr>
+    </tr>
+
+    </tbody>
+</table>
+
+<input id="generateChartsButton" class="btn btn-raised btn-lg btn-primary" value="Generate Charts" ng-click="generateCharts()">
 
     <highchart id="chart1"  class="span10" config="chartConfig"></highchart>

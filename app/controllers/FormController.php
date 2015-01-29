@@ -5,19 +5,19 @@ class FormController extends \BaseController {
 	public function postStartListener()
 	{
 
-		$output = shell_exec("cd /var/www/html/sdaps/ && php artisan queue:listen 2>&1");
+		$output = shell_exec("cd /var/www/html/sdaps/ && php artisan queue:listen --timeout=0 2>&1 &");
 		return $this->response("success","queue started",$output);
 	}
 
 
-	public function postQueue()
-	{
-		$message = array('key' => 'value');
-
-		Queue::push('FormProcessJob', array('message' => $message));
-
-		return $this->response("success","added to queue",$message);
-	}
+//	public function postQueue()
+//	{
+//		$message = array('key' => 'value');
+//
+//		Queue::push('FormProcessJob', array('message' => $message));
+//
+//		return $this->response("success","added to queue",$message);
+//	}
 
     public function postRetrieveDepartments()
     {
@@ -29,9 +29,7 @@ class FormController extends \BaseController {
 
 	public function addForms($files)
 	{
-		$command = '/var/www/html/sdaps/scripts/recyclesdap.sh ';
 
-		$output1 = shell_exec( $command );
 
 		$fileNamesString = '';
 		foreach($files as $uploadedResult)
@@ -44,6 +42,9 @@ class FormController extends \BaseController {
 
 		$output2 = shell_exec( $command );
 
+		$command = '/var/www/html/sdaps/scripts/recyclesdap.sh ';
+
+		$output1 = shell_exec( $command );
 
 		return $output1.$output2;
 	}
@@ -170,7 +171,7 @@ class FormController extends \BaseController {
 	}
 
 
-	public function retrieveGranualData()
+	public function retrieveGranualData($department)
 	{
 		$feedbacks = Feedback::all();
 
@@ -178,23 +179,45 @@ class FormController extends \BaseController {
 		foreach($feedbacks as $feedback)
 		{
 
-			$responses = $feedback['form']['responses'];
+			if($feedback->department == $department) {
 
-			if (is_array($responses))
-			{
-				foreach ($responses as $response)
-				{
-					array_push($granualResults, $response);
+				$responses = $feedback['form']['responses'];
+
+				if (is_array($responses)) {
+					foreach ($responses as $response) {
+						array_push($granualResults, $response);
+					}
 				}
 			}
 		}
 		return $granualResults;
 	}
 
+	public function postShowByDepartment()
+	{
+		$feedbacks = Feedback::all();
+
+		$feedbackData = array();
+		foreach($feedbacks as $feedback)
+		{
+			if($feedback->department == 'Aundh')
+			{
+				array_push($feedbackData, $feedback);
+			}
+		}
+//		$feedback = Feedback::where('department', '=', 'Aundh');
+
+		return $this->response("success",'retrieved',$feedbackData);
+	}
+
 	public function postGenerateReportsFromDb()
 	{
+
+
+		$department = Input::get('department');
+
 		//Retrieve granual data from DB
-		$granualData = $this->retrieveGranualData();
+		$granualData = $this->retrieveGranualData($department);
 
 		//generate reports using it.
 		$reports = $this->generateReports($granualData);
@@ -217,6 +240,7 @@ class FormController extends \BaseController {
 
 	public function postStartFormsProcessing()
 	{
+
 		$department = Input::get('department');
 		$totalPages = Input::get('total_pages');
 

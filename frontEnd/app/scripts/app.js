@@ -22,7 +22,8 @@ angular
         'pdf',
       'toastr',
         'highcharts-ng',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'trNgGrid'
   ])
     .config(function(RestangularProvider) {
         RestangularProvider.setBaseUrl('http://192.168.2.232/sdaps/public');
@@ -66,7 +67,7 @@ angular
       })
       .when('/reports', {
         templateUrl: 'views/reports.html',
-        controller: 'MainCtrl'
+        controller: 'ReportsCtrl'
       })
       .when('/about', {
         templateUrl: 'views/about.html',

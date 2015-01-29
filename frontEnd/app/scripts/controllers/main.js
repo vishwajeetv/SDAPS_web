@@ -8,7 +8,7 @@
  * Controller of the sdapsApp
  */
 angular.module('sdapsApp')
-  .controller('MainCtrl', function ($scope, $timeout, Restangular, $upload, $sce, $location) {
+  .controller('MainCtrl', function ($scope, $timeout, Restangular, toastr, $upload, $sce, $location) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -100,78 +100,6 @@ angular.module('sdapsApp')
 
 
         $scope.departments =  null;
-
-
-
-        $scope.generateCharts = function() {
-            var getReportsMethod = Restangular.all('index.php/form/generate-reports-from-db');
-
-            getReportsMethod.post().then(function (response) {
-
-                toastr.success(response.header.message, 'Success');
-                console.log(response.body);
-                var report = response.body;
-                var totalReportGradeCount = report.total.gradeCount;
-                var totalCount = report.total.count;
-
-
-                $scope.chartConfig = {
-
-                    options: {
-                        chart: {
-                            type: 'bar'
-                        }
-                    },
-                    title: {
-                        text: "good"
-                    },
-                    xAxis: {
-                        categories: ['1-3 times', '3-6 times', 'more than 6 times']
-                    },
-                    yAxis: {
-                        labels: {
-                            formatter: function () {
-                                var pcnt = (this.value / totalCount) * 100;
-                                return Highcharts.numberFormat(pcnt, 0, ',') + '%';
-                            }
-                        }
-                    },
-                    tooltip: {
-                        formatter: function () {
-                            var pcnt = (this.y / totalCount) * 100;
-                            return Highcharts.numberFormat(pcnt) + '%';
-                        }
-                    },
-                    plotOptions: {
-                        series: {
-                            shadow: false,
-                            borderWidth: 0,
-                            dataLabels: {
-                                enabled: true,
-                                formatter: function () {
-                                    var pcnt = (this.y / totalCount) * 100;
-                                    return Highcharts.numberFormat(pcnt) + '%';
-                                }
-                            }
-                        }
-                    },
-                    series: [{
-                        type: 'bar',
-                        colorByPoint: true,
-                        data: [
-
-                            ['excellent', totalReportGradeCount.excellent],
-                            ['good', totalReportGradeCount.good],
-                            ['satisfactory', totalReportGradeCount.satisfactory],
-                            ['unsatisfactory', totalReportGradeCount.unsatisfactory],
-                            ['mediocre', totalReportGradeCount.mediocre]
-                        ]
-                    }]
-                }
-            }, function () {
-                toastr.error('Sorry, something went wrong', 'Error');
-            });
-        };
 
         $scope.retrieveDepartments = function()
         {
