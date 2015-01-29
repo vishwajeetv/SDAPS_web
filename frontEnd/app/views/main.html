@@ -1,23 +1,63 @@
-<link rel="stylesheet" type="text/css" href="../styles/style.css">
-<div class="container">
-	<div class="header">
-		<center> Citizen Feedback System</center>
+<!--<link rel="stylesheet" type="text/css" href="../styles/style.css">-->
+<!--<div class="container">-->
+	<!--<div class="header">-->
+		<!--<center> Citizen Feedback System</center>-->
+	<!--</div>-->
+	<!--<div class="main">-->
+		<!--<div class="content">-->
+
+		<!--</div>-->
+
+		<!--</div>-->
+	<!--</div>-->
+<!--</div>-->
+
+<div class="row">
+	<div class="col-md-1">
+
 	</div>
-	<div class="main">
-		<div class="content">
-			<label>Select Department</label>
-			<select id="dept_list">
-				<option ng-repeat="department in departments" value="{{department.dept_name}}">
-					{{department.dept_name}}
-				</option>
-			</select>
-			<label class="browselbl">Choose File</label>
+	<div class="col-md-10">
+		<div class="row">
+			<div class="col-md-3">
 
-			<input type="file" title="" accept="*" multiple="true" class="uploadbtn" ng-file-select="onFileSelect($files)" />
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Uplaod File</h3>
+					</div>
+					<div class="panel-body">
 
+						<div class="form-group form-input-element">
+							<label for="" class="col-sm-4 control-label">Select Department</label>
+							<div class="col-sm-7">
+								<ui-select ng-model="department.selected" theme="bootstrap">
+									<ui-select-match placeholder="Select or search a department in the list...">{{$select.selected.name }}</ui-select-match>
+									<ui-select-choices repeat="department in departments | filter: $select.search">
+										<span ng-bind-html="department.name | highlight: $select.search"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+
+						<label>Select Department</label>
+
+						<label>Choose File</label>
+
+						<input type="file" title="" accept="*" multiple="true" class="uploadbtn" ng-file-select="onFileSelect($files)" />
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<button class="btn btn-danger pull-right">Logout</button>
+
+			</div>
 		</div>
+	</div>
+	<div class="col-md-1">
 
-		</div>
 	</div>
 </div>
 

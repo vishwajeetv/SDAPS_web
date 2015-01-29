@@ -18,16 +18,13 @@ class FormController extends \BaseController {
 
 		return $this->response("success","added to queue",$message);
 	}
-    public function postShow()
-    {
-//        $data = DB::collection('dept')->get();
-////        return View::make('show');
-//        return View::make('form.show')->with('data', $data);
 
+    public function postRetrieveDepartments()
+    {
 
 		$departments = Department::all();
 
-        return $this->response("success","forms added successfully",$departments);
+        return $this->response("success","Departments retrieved",$departments);
     }
 
 	public function addForms($uploadedResults)

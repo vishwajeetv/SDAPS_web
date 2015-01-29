@@ -1,24 +1,15 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 25/1/15
+ * Time: 10:23 PM
+ */
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
+use Jenssegers\Mongodb\Model as Eloquent;
 
-class Department extends Moloquent {
+class Department extends Eloquent{
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'dept';
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = array('password', 'remember_token');
 
 }

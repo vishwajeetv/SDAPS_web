@@ -15,6 +15,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+        'ui.select',
       'restangular',
         'angularFileUpload',
         'pdf',

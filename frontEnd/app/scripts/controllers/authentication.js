@@ -11,6 +11,11 @@
 angular.module('sdapsApp')
     .controller('AuthenticationCtrl', function ($scope, $location, toastr, Restangular) {
 
+        if (sessionStorage.authenticated)
+        {
+            $location.path('/main');
+        }
+
 
         $scope.login = function()
         {

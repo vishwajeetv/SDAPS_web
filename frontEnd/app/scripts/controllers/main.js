@@ -14,12 +14,25 @@ angular.module('sdapsApp')
       'AngularJS',
       'Karma'
     ];
+
+        if (!sessionStorage.authenticated)
+        {
+            $location.path('/');
+        }
+
+        $timeout(function () {
+            $scope.retrieveDepartments();
+        }, 1);
+
+        $scope.logout = function (){
+
+            delete sessionStorage.authenticated;
+            $location.path('/');
+
+        };
+
         $scope.onFileSelect = function($files) {
 
-            if (!sessionStorage.authenticated)
-            {
-                $location.path('/');
-            }
 
             console.log($files); // undefined
             //$files: an array of files selected, each file has name, size, and type.
@@ -110,11 +123,11 @@ angular.module('sdapsApp')
             });
         };
 
-        $scope.getDepartments = function()
+        $scope.retrieveDepartments = function()
         {
-            var getCountriesMethod = Restangular.all('form/show');
+            var retrieveDepartmentsMethod = Restangular.all('form/retrieve-departments');
 
-            getCountriesMethod.post().then(function (response) {
+            retrieveDepartmentsMethod.post().then(function (response) {
 
                 console.log(response.body);
                 $scope.departments = response.body;

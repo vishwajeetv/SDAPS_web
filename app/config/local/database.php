@@ -35,7 +35,7 @@ return array(
             'host'     => 'localhost',
             'username' => '',
             'password' => '',
-            'database' => 'Departments'
+            'database' => 'sdaps'
         ),
 		'pgsql' => array(
 			'driver'   => 'pgsql',
