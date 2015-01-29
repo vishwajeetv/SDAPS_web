@@ -1,37 +1,79 @@
-<link rel="stylesheet" type="text/css" href="../styles/dataentry.css">
-
-<div class="pdf_section">
-<ng-pdf template-url="views/pdfview.html"></ng-pdf>
+<div class="text-center">
+	<pagination total-items="totalItems" items-per-page=1 ng-change="pageChanged()"
+				ng-model="currentPage" class="pagination-lg" boundary-links="true" rotate="false"
+				num-pages="numPages" max-size="15"></pagination>
 </div>
 
-<form action="" method="post">
-	<div class="container">
+<div class="row">
+	<div class="col-md-6">
+		<pdf-viewer
+				delegate-handle="my-pdf-container"
+				url="pdfUrl"
+				scale="1"
+				show-toolbar="true"></pdf-viewer>
 
 
-				<h3 class="heading">1 Personal Information </h3>
+	</div>
+	<div class="col-md-6">
 
-				<label for="name">1.1 Name</label>
-				<input ng-model="citizenName" type="text" id="name" name="name">
 
-				<label>1.2 Gender</label>
-				<input ng-model="citizenGender" type="radio" name="gender">Female
-				<input type="citizenGender" name="gender">Male
-				<input type="citizenGender" name="gender">Other
-
-				<label for="address">1.3 Address</label>
-				<input ng-model="citizenAddress" type="text" id="address" name="address">
-
-				<label for="reason">1.4 Reason for meet</label>
-				<input ng-model="citizenReason" type="text" name="reason" id="reason">
-
-				<label for="mobno">1.5 Mobile No.</label>
-				<input ng-model="citizenMobile" type="text" id="mobno" name="mobno">
-
-				<label for="email">1.6 Email</label>
-				<input ng-model="citizenEmail" type="text" name="email" id="email">
-
-				<button class="btn btn-lg btn-primary" ng-click="storeCitizenInfo()"></button>
-				<div style="clear:both"></div>
+		<div class="form-horizontal">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">Full Name</label>
+				<div class="col-sm-8">
+					<input type="text" ng-model="name" class="form-control" id="inputEmail3" placeholder="Full Name">
+				</div>
 			</div>
 
-</form>		
+
+
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+				<div class="col-sm-8">
+					<textarea ng-model="address" class="form-control" id="inputEmail3" placeholder="Full Address"></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">Email ID</label>
+				<div class="col-sm-8">
+					<input ng-model="email" type="text" class="form-control" id="inputEmail3" placeholder="Email ID">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">Mobile Number</label>
+				<div class="col-sm-8">
+					<input ng-model="mobile" type="text" class="form-control" id="inputEmail3" placeholder="Mobile Number">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="inputEmail3" class="col-sm-2 control-label">Reason for Meeting</label>
+				<div class="col-sm-8">
+					<textarea ng-model="reason" type="text" class="form-control" id="inputEmail3" placeholder="Reason for meeting"></textarea>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<button ng-click="storeCitizenInfo()" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</div>
+
+		{{currentPage}}
+		{{fileName}}
+
+		<pager total-items="totalItems" ng-change="pageChanged()" items-per-page=1 ng-model="currentPage"></pager>
+
+	</div>
+
+
+</div>
+</div>
+
+
+
+
