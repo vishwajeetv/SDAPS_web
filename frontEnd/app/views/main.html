@@ -18,39 +18,58 @@
 	</div>
 	<div class="col-md-10">
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-2">
 
 			</div>
-			<div class="col-md-6">
-				<div class="panel panel-primary">
+			<div class="col-md-8">
+				<div class="panel panel-info">
 					<div class="panel-heading">
 						<h3 class="panel-title">Uplaod File</h3>
 					</div>
 					<div class="panel-body">
 
+						{{department3.selected.name}}
 						<div class="form-group form-input-element">
-							<label for="" class="col-sm-4 control-label">Select Department</label>
+							<label for="" class="col-sm-5 control-label">Select Department</label>
 							<div class="col-sm-7">
-								<ui-select ng-model="department.selected" theme="bootstrap">
-									<ui-select-match placeholder="Select or search a department in the list...">{{$select.selected.name }}</ui-select-match>
-									<ui-select-choices repeat="department in departments | filter: $select.search">
-										<span ng-bind-html="department.name | highlight: $select.search"></span>
-									</ui-select-choices>
-								</ui-select>
+								<select ng-model="department">
+									<option ng-repeat="department in departments" value="{{department.name}}">
+										{{department.name}}
+									</option>
+								</select>
 							</div>
 							<div class="col-sm-1"></div>
 						</div>
 
-						<label>Select Department</label>
+						<br><hr>
+						<div class="form-group form-input-element">
+							<label for="" class="col-sm-5 control-label">Choose File</label>
 
-						<label>Choose File</label>
 
-						<input type="file" title="" accept="*" multiple="true" class="uploadbtn" ng-file-select="onFileSelect($files)" />
+								<div class="col-sm-7">
+									<input type="file" title="" accept="*" multiple="true"
+										   ng-file-select="onFileSelect($files)" />
+								</div>
+
+
+						</div>
+
+						<br>
+						<hr>
+						<div class="form-group">
+							<div class="col-sm-offset-5 col-sm-3">
+								<button  ng-click="processForms()" class="btn btn-primary"><i class="fa fa-gears"></i> Process Files</button>
+							</div>
+
+						</div>
+
+
+
 
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<button class="btn btn-danger pull-right">Logout</button>
 
 			</div>

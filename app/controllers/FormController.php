@@ -27,14 +27,14 @@ class FormController extends \BaseController {
         return $this->response("success","Departments retrieved",$departments);
     }
 
-	public function addForms($uploadedResults)
+	public function addForms($files)
 	{
 		$command = '/var/www/html/sdaps/scripts/recyclesdap.sh ';
 
 		$output1 = shell_exec( $command );
 
 		$fileNamesString = '';
-		foreach($uploadedResults as $uploadedResult)
+		foreach($files as $uploadedResult)
 		{
 			$fileName = $uploadedResult['fileName'];
 			$fileNamesString .= ' "'."/var/www/html/uploads/".$fileName.'"';
@@ -43,6 +43,7 @@ class FormController extends \BaseController {
 		$command = '/var/www/html/sdaps/scripts/sdapshell.sh -p "/var/www/html/pmccs_aundh" -a "add" -A "convert" -f '.$fileNamesString;
 
 		$output2 = shell_exec( $command );
+
 
 		return $output1.$output2;
 	}
@@ -214,6 +215,36 @@ class FormController extends \BaseController {
 
 	}
 
+	public function postStartFormsProcessing()
+	{
+		$department = Input::get('department');
+		$totalPages = Input::get('total_pages');
+
+		/*
+		 *  processFormsData.filesData.push(
+                        {
+                            'fileName' : $scope.uploadedFiles[i].fileName,
+                            'total_pages' : $scope.uploadedFiles[i].totalPages
+                        }
+                    );
+		 */
+		$filesData = Input::get('filesData');
+		Log::info("filesData started");
+		Log::info($filesData);
+		$feedbackData = $this->createFeedbackRecord($totalPages, $department, $filesData);
+
+
+		$jobData = array(
+			'feedbackData' => $feedbackData,
+			'files' => $filesData
+		);
+
+		Log::info($jobData);
+		Queue::push('FormProcessJob',
+			$jobData
+		);
+		return $this->response("success","processing queue started",$jobData);
+	}
 	public function postUploadForm()
 	{
 
@@ -254,23 +285,10 @@ class FormController extends \BaseController {
 					"message" => $uploadMessages,
 					"totalPages" => $totalPages
 					));
-			$uploadSuccess = 1;
-//						$department = Input::get('department');
-
-			$department = "greatDepartment";
-
-			$feedbackData = $this->createFeedbackRecord($totalPages, $department, $file);
 
 
-			$jobData = array(
-				'feedbackData' => $feedbackData,
-				'uploadedResult' => $uploadedResult
-			);
-			Log::info($jobData);
-			Queue::push('FormProcessJob',
-				$jobData
-			);
-			return $this->response("success","uploaded",$feedbackData);
+
+			return $this->response("success","uploaded",$uploadedResult);
 		}
 		else
 		{
@@ -939,25 +957,28 @@ class FormController extends \BaseController {
 	 * @param $file
 	 * @return mixed
 	 */
-	public function createFeedbackRecord($totalPages, $department, $file)
+	public function createFeedbackRecord($totalPages, $department, $filesData)
 	{
 		$feedbackData = array();
-		for ($i = 0; $i < $totalPages; $i++) {
-			$feedback = new Feedback;
+		foreach($filesData as $file) {
 
-			$department = "greatDepartment";
-			$feedback->department = $department;
+			for ($i = 0; $i < $file['total_pages']; $i++) {
+				$feedback = new Feedback;
 
-			$feedback->filename = basename($file["name"]);
 
-			$feedback->page = ($i + 1);
-			$feedback->save();
+				$feedback->department = $department;
 
-			array_push($feedbackData, array(
-				'feedbackId' => $feedback['_id'],
-				'department' => $department,
-				'fileName' => basename($file["name"])
-			));
+				$feedback->filename = $file['fileName'];
+
+				$feedback->page = ($i + 1);
+				$feedback->save();
+
+				array_push($feedbackData, array(
+					'feedbackId' => $feedback['_id'],
+					'department' => $department,
+					'fileName' => $file['fileName']
+				));
+			}
 		}
 		return $feedbackData;
 	}

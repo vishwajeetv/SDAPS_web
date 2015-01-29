@@ -8,12 +8,17 @@
  * Controller of the sdapsApp
  */
 angular.module('sdapsApp')
-  .controller('MainCtrl', function ($scope, $timeout, Restangular, $upload) {
+  .controller('MainCtrl', function ($scope, $timeout, Restangular, $upload, $sce) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+
+        $scope.trustAsHtml = function (value) {
+            return $sce.trustAsHtml(value);
+        };
+
 
         if (!sessionStorage.authenticated)
         {
@@ -31,6 +36,36 @@ angular.module('sdapsApp')
 
         };
 
+        $scope.uploadedFiles = null;
+
+        $scope.department = null;
+
+        $scope.processForms = function()
+        {
+
+                var processFormsData = {
+                    filesData : []
+            };
+
+                for(var i=0; i < $scope.uploadedFiles.length; i++ )
+                {
+                    processFormsData.filesData.push(
+                        {
+                            'fileName' : $scope.uploadedFiles[i].fileName,
+                            'total_pages' : $scope.uploadedFiles[i].totalPages
+                        }
+                    );
+                }
+            processFormsData.department = $scope.department;
+
+            console.log(processFormsData);
+            var processFormsMethod = Restangular.all('form/start-forms-processing');
+
+            processFormsMethod.post(processFormsData).then(function (response) {
+
+                console.log(response.body);
+            });
+        };
         $scope.onFileSelect = function($files) {
 
 
@@ -46,7 +81,9 @@ angular.module('sdapsApp')
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                 }).success(function(data, status, headers, config) {
                     // file is uploaded successfully
-                    console.log(data);
+
+                    $scope.uploadedFiles = data.body;
+                    console.log($scope.uploadedFiles);
                 });
             }
         };
