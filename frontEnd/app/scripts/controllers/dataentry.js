@@ -9,7 +9,7 @@
  * Controller of the sdapsApp
  */
 angular.module('sdapsApp')
-    .controller('DataentryCtrl', function ($scope, $location, toastr, Restangular,$timeout, pdfDelegate) {
+    .controller('DataentryCtrl', function ($scope,toastr, Restangular,$timeout, pdfDelegate) {
 
 
 

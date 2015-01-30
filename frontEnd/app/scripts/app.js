@@ -52,14 +52,17 @@ angular
     })
   .config(function ($routeProvider) {
     $routeProvider
-        .when('/', {
-          templateUrl: 'views/authenticate.html',
-          controller: 'AuthenticationCtrl'
-        })
+      .when('/', {
+        templateUrl: 'views/authenticate.html',
+        controller: 'AuthenticationCtrl'
+      })
       .when('/main', {
-
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .when('/dashboard',{
+        templateUrl : 'views/dashboard.html',
+        controller:'DashboardCtrl'
       })
       .when('/form', {
         templateUrl: 'views/form.html',

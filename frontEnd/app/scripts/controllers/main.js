@@ -8,7 +8,7 @@
  * Controller of the sdapsApp
  */
 angular.module('sdapsApp')
-  .controller('MainCtrl', function ($scope, $timeout, Restangular, toastr, $upload, $sce, $location) {
+  .controller('MainCtrl', function ($scope, $timeout, Restangular, toastr, $upload, $sce) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -19,22 +19,9 @@ angular.module('sdapsApp')
             return $sce.trustAsHtml(value);
         };
 
-
-        if (!sessionStorage.authenticated)
-        {
-            $location.path('/');
-        }
-
         $timeout(function () {
             $scope.retrieveDepartments();
         }, 1);
-
-        $scope.logout = function (){
-
-            delete sessionStorage.authenticated;
-            $location.path('/');
-
-        };
 
         $scope.uploadedFiles = null;
 

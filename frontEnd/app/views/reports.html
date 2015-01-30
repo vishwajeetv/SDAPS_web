@@ -1,24 +1,37 @@
 
 <!--<table tr-ng-grid="" items="reportsTable">-->
 <!--</table>-->
+<style>
+label
+{
+    text-align: center;
+    color: gray;
+    display: block;
+}   
+#generateChartsButton
+{
+    margin-top: 2%;
+    display: block;
+}
+</style>
 
+<center>
+    <label>Select Department</label>
 
-<select ng-model="department">
-    <option ng-repeat="department in departments" value="{{department.name}}">
-        {{department.name}}
-    </option>
-</select>
+    <select ng-model="department">
+        <option ng-repeat="department in departments" value="{{department.name}}">
+            {{department.name}}
+        </option>
+    </select>
 
-<input id="generateChartsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" ng-click="getReports()">
-
+    <input id="generateChartsButton" class="btn btn-raised btn-lg btn-primary" value="Retrieve Reports" ng-click="getReports()">
+</center>
 
 <table class="table table-striped">
     <thead>
     <tr>
-
         <th>Criteria</th>
         <th>Total Feedbacks</th>
-
     </tr>
     </thead>
     <tbody>
@@ -31,6 +44,8 @@
     </tbody>
 </table>
 
-<input id="generateChartsButton" class="btn btn-raised btn-lg btn-primary" value="Generate Charts" ng-click="generateCharts()">
+<center>  
+    <input id="generateChartsButton" class="btn btn-raised btn-lg btn-primary" value="Generate Charts" ng-click="generateCharts()">
+</center>
 
     <highchart id="chart1"  class="span10" config="chartConfig"></highchart>

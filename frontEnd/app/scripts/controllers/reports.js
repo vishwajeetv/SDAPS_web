@@ -8,30 +8,17 @@
  * Controller of the sdapsApp
  */
 angular.module('sdapsApp')
-  .controller('ReportsCtrl', function ($scope, $timeout, Restangular, $sce, $location, toastr) {
+  .controller('ReportsCtrl', function ($scope, $timeout, Restangular, $sce, toastr) {
 
 
         $scope.trustAsHtml = function (value) {
             return $sce.trustAsHtml(value);
         };
 
-
-        if (!sessionStorage.authenticated)
-        {
-            $location.path('/');
-        }
-
         $timeout(function () {
             $scope.retrieveDepartments();
             //$scope.getReports();
         }, 1);
-
-        $scope.logout = function (){
-
-            delete sessionStorage.authenticated;
-            $location.path('/');
-
-        };
 
         $scope.departments =  null;
 
