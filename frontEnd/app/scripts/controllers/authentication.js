@@ -31,7 +31,7 @@ angular.module('sdapsApp')
                     sessionStorage.authenticated = true;
 
                     toastr.success(response.header.message, 'Success');
-                    $location.path('/main');
+                    $location.path('/dashboard');
                 }
                 else {
                     toastr.error("Incorrect username or password", 'Error');
