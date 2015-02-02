@@ -125,6 +125,14 @@ class FormController extends \BaseController {
 
 	}
 
+	public function postRecycle()
+	{
+		$command = '/var/www/html/sdaps/scripts/recyclesdap.sh 2>&1';
+
+		$output = shell_exec( $command );
+
+		return $this->response("success","recycled",$output);
+	}
 	public function storeConsolidatedResults($feedbackRecords)
 	{
 		$results = $this->addFeedbackDataToConsolidatedResults($feedbackRecords);
