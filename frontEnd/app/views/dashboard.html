@@ -1,0 +1,36 @@
+<style>
+	.logoutbtn
+	{
+		float: right;
+		padding-right: 0;
+	}
+	.tab-content
+	{
+		padding: 5% 2%;
+		border:1px solid #e3e3e3;
+		border-top: none;
+	}
+	.ng-scope
+	{
+		margin-bottom: 5%;
+	}
+</style>
+	<div class="col-md-6" id="userInfo">
+
+	</div>
+	<div class="col-md-2 logoutbtn">
+		<button class="btn btn-danger pull-right" ng-click="logout()">Logout</button>
+	</div>
+<div ng-controller="DashboardCtrl" style="clear:both;">
+	<tabset justified="true">
+	    <tab heading="Upload">
+	    	<ng-include src="'views/main.html'" ng-controller="MainCtrl"></ng-include>
+	    </tab>
+	    <tab heading="Data Entry">
+	    	<ng-include src="'views/form.html'" ng-controller="DataentryCtrl"></ng-include>
+	    </tab>
+	    <tab heading="Reports">
+	    	<ng-include src="'views/reports.html'" ng-controller="ReportsCtrl"></ng-include>
+	    </tab>
+  </tabset>
+</div>
