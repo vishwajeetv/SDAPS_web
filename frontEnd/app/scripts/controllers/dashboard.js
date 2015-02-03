@@ -20,7 +20,6 @@ angular.module('sdapsApp')
 
             delete sessionStorage.authenticated;
             $location.path('/');
-
         };
 
 });

@@ -64,7 +64,7 @@ angular.module('sdapsApp')
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 $scope.upload = $upload.upload({
-                    url: 'http://192.168.2.232/sdaps/public/form/upload-form', //upload.php script, node.js route, or servlet url
+                    url: 'http://192.168.2.22/sdaps/public/form/upload-form', //upload.php script, node.js route, or servlet url
                     data: file,
                     file: file
                 }).progress(function(evt) {
@@ -100,5 +100,8 @@ angular.module('sdapsApp')
                 toastr.error('Sorry, can not retrieve departments, something went wrong', 'Error');
             });
         };
+
+        // $scope.UploadURL = '/views/main.html';
+        $scope.reportUrl = '/views/reports.pdf';
 
   });

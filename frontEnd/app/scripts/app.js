@@ -26,7 +26,7 @@ angular
         'trNgGrid'
   ])
     .config(function(RestangularProvider) {
-        RestangularProvider.setBaseUrl('http://192.168.2.232/sdaps/public');
+        RestangularProvider.setBaseUrl('http://192.168.2.22/sdaps/public');
         RestangularProvider.setDefaultHeaders({ "Content-Type": "application/json" });
     })
     .config(function(toastrConfig) {

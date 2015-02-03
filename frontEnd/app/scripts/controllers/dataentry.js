@@ -22,7 +22,6 @@ angular.module('sdapsApp')
 
         $scope.setPage = function (pageNo) {
             $scope.currentPage = pageNo;
-
         };
 
         $scope.pageChanged = function() {
@@ -72,29 +71,33 @@ angular.module('sdapsApp')
         {
             var storeCitizenInfoMethod = Restangular.all('form/store-citizen-info');
 
-            var citizenInfo = {
-                'feedbackId' : $scope.feedbackId,
-                'name' : $scope.name,
-                'email' : $scope.email,
-                'address' : $scope.address,
-                'mobile' : $scope.mobile,
-                'meeting_reason' : $scope.reason
-            };
+            if($scope.feedbackId && $scope.name && $scope.email && $scope.address && $scope.mobile && $scope.reason)
+            {
+                var citizenInfo = {
+                    'feedbackId' : $scope.feedbackId,
+                    'name' : $scope.name,
+                    'email' : $scope.email,
+                    'address' : $scope.address,
+                    'mobile' : $scope.mobile,
+                    'meeting_reason' : $scope.reason
+                };
 
-            storeCitizenInfoMethod.post(citizenInfo).then(function (response) {
-                toastr.success(response.header.message, 'Success');
-                console.log(response.body);
-            }, function () {
-                toastr.error('Sorry, something went wrong', 'Error');
-            });
-
-
+                storeCitizenInfoMethod.post(citizenInfo).then(function (response) {
+                    toastr.success(response.header.message, 'Success');
+                    console.log(response.body);
+                }, function () {
+                    toastr.error('Sorry, something went wrong', 'Error');
+                });
+            }
+            else
+            {
+                console.log('error');
+            }
         };
 
 
 
         $scope.pdfUrl = '/images/survey.pdf';
-
-
+        // $scope.dataentryUrl = '/views/form.html';
 
     });

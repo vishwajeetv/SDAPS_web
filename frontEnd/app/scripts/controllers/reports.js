@@ -166,4 +166,5 @@ angular.module('sdapsApp')
             });
         };
 
+        $scope.reportUrl = '/images/survey.pdf';
   });
