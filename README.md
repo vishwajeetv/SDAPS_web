@@ -6,6 +6,7 @@ Built with Laravel Freamework (4.2), AngularJS (1.3), MongoDB
 Uses Shell Script Wrappers to interact with SDAPS
 
 Setup Instructions - 
+
 1. Setup MongoDB
 2. `php artisan serve`
 3. `cd frontEnd && grunt serve`
