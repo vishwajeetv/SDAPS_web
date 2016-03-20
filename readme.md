@@ -1,4 +1,4 @@
-#OMR Based Feedback System
+#OMR Based Citizen Feedback System
 Based on [SDAPP](http://sdaps.org/)
 
 Built with Laravel Freamework (4.2), AngularJS (1.3), MongoDB
